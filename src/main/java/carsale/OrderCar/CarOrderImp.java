@@ -26,7 +26,7 @@ public class CarOrderImp implements CarOrderDAO{
 		ResultSet rs=ps.executeQuery();
 		
 		if (rs.next()) {
-			try {
+		
 				int carId=rs.getInt("car_id");
 			String sql="insert into car_order(order_id,buyer_name,buyer_contact_number,car_id,seller_id,test_drive,address1,address2,city,buyer_state,pincode)values(order_id_sq.nextval,?,?,?,?,?,?,?,?,?,?)";
 			System.out.println(sql);
@@ -54,12 +54,8 @@ public class CarOrderImp implements CarOrderDAO{
 			//Statement upst=con.createStatement();
 			int uprs=pt.executeUpdate();
 		}
-			catch(Exception e)
-			{
-				e.printStackTrace();
-				System.out.println(e.getMessage());
-			}
-		}
+			
+		
 		}catch(Exception e)
 		{
 			if(stt!=null) {

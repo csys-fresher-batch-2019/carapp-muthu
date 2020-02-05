@@ -149,9 +149,10 @@ import carsale.ownerDetail.CarOwner;
 	public String toString() {
 		return "CarDetail [carOwnerId=" + carOwnerId + ", carId=" + carId + ", carBrand=" + carBrand + ", carName="
 				+ carName + ", trType=" + trType + ", fuelType=" + fuelType + ", regState=" + regState + ", regYear="
-				+ regYear + ", vehicleIdNo=" + vehicleIdNo + ", registrationNo=" + registrationNo + ", drivenKm="
-				+ drivenKm + ", updateDate=" + updateDate + ", price=" + price + ", status=" + status
-				+ ", carAvailableCity=" + carAvailableCity + ", carOwner=" + carOwner + "]";
+				+ regYear + ", registrationNo=" + registrationNo + ", drivenKm=" + drivenKm + ", updateDate="
+				+ updateDate + ", price=" + price + ", status=" + status + ", carAvailableCity=" + carAvailableCity
+				+ ", vehicleIdNo=" + vehicleIdNo + ", isOwner=" + isOwner + ", contactNo=" + contactNo + ", password="
+				+ password + ", carOwner=" + carOwner + "]";
 	}
 	
 }

@@ -120,6 +120,8 @@ public class TestCarDetails {
             String registrationNo=s.next();
             System.out.println("Enter the  vehicle identifcation no");
             String vehicleNo=s.next();
+            System.out.println(" are you  owner(press 1) or intermediatary(press 0)");
+            int isOwner=s.nextInt();
 			LocalDate updatedDate=LocalDate.now();
 			
 			CarOwner cown=new CarOwner();
@@ -142,6 +144,7 @@ public class TestCarDetails {
 		    cardetail.setPassword(pass);
 		   cardetail.setVehicleIdNo(vehicleNo);
 		   cardetail.setCarOwner(cown);
+		   cardetail.setIsOwner(isOwner);
 			 ci.addCarDetail(cardetail);
 			}
 			else
@@ -185,8 +188,10 @@ public class TestCarDetails {
 			String carAvailabeCity=s.next();
 			System.out.println("Enter the Registration No");
             String registrationNo=s.next();
-            System.out.println("Etner the  vehicle identifcation no");
+            System.out.println("Enter the  vehicle identifcation no");
             String vehicleNo=s.next();
+            System.out.println( "are you  owner(press 1) or intermediatary(press 0)");
+            int isOwner=s.nextInt();
 			LocalDate updatedDate=LocalDate.now();
 			
 		    CarDetail cardetail = new CarDetail();
@@ -206,6 +211,7 @@ public class TestCarDetails {
 		    cardetail.setRegistrationNo(registrationNo);
 		   cardetail.setVehicleIdNo(vehicleNo); 
 			cardetail.setCarOwner(car);
+			cardetail.setIsOwner(isOwner);
 		   ci.addCarDetail(cardetail);
 			}
 			else

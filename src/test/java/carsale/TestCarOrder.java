@@ -29,7 +29,8 @@ public class TestCarOrder {
 			int ch = sc.nextInt();
 			switch (ch) {
 			case 1: {
-
+				LocalDate ldd = LocalDate.now();
+				
 				System.out.println("Enter the buyer name");
 				String buyerName = sc.next();
 				System.out.println("Enter the  buyer contact no");
@@ -40,14 +41,28 @@ public class TestCarOrder {
 				int sellerId = sc.nextInt();
 				System.out.println("Aru you apply Test Drive?");
 				String testDrive = sc.next();
-
+                System.out.println("Enter the Streetname");
+                String streetName=sc.next();
+                System.out.println("Enter the doorno");
+                String doorNo=sc.next();
+                System.out.println("Enter the city");
+                String city=sc.next();
+                System.out.println("Enter the state");
+                String state=sc.next();
+                System.out.println("Enter the pincode");
+                int pincode=sc.nextInt();
 				CarOrderImp obj = new CarOrderImp();
 				CarOrder c = new CarOrder();
 				c.setBuyerName(buyerName);
 				c.setBuyerContactNo(contactno);
-				c.setCarid(carId);
+				c.setCarId(carId);
 				c.setSellerId(sellerId);
 				c.setTestDrive(testDrive);
+				c.setAddress1(streetName);
+				c.setAddress2(doorNo);
+				c.setCity(city);
+				c.setBuyerState(state);
+                c.setPincode(pincode);
 				obj.orderCar(c);
 				break;
 			}
@@ -58,7 +73,7 @@ public class TestCarOrder {
 				List<CarOrder> cars = obj.getCarDeleveryDate(id);
 				String fileContent = "";
 				for (CarOrder c : cars) {
-					String data = c.getBuyerName() + "," + c.getOrderId() + "," + c.getCarid() + ","
+					String data = c.getBuyerName() + "," + c.getOrderId() + "," + c.getCarId() + ","
 							+ c.getDeliveredDate();
 					fileContent = fileContent + data + "\n";
 				}
@@ -73,10 +88,11 @@ public class TestCarOrder {
 
 				Date daa = Date.valueOf(ldd);
 				CarOrderImp co = new CarOrderImp();
-
-				System.out.println("enter the Delivery date");
-				String dat = sc.next();
-				ArrayList<CarOrder> al = co.getDeliveryCarDet(dat);
+               System.out.println("Enter the order_id");
+               int orderId=sc.nextInt();
+				//System.out.println("enter the Delivery date");
+				//String dat = sc.next();
+				ArrayList<CarOrder> al = co.getDeliveryCarDet(orderId);
 				for (CarOrder c : al) {
 					LocalDate deliveredDate = c.getDeliveredDate().toLocalDate();
 					long days = Duration.between(ldd.atTime(0, 0), deliveredDate.atTime(0, 0)).toDays();

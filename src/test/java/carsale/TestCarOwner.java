@@ -3,6 +3,7 @@ package carsale;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import carsale.OrderCar.CarOrder;
 import carsale.carDetail.CarDetail;
 import carsale.ownerDetail.CarOwner;
 import carsale.ownerDetail.CarOwnerDAO;
@@ -29,6 +30,7 @@ public class TestCarOwner {
 		System.out.println("1.View Your car");
 		System.out.println("2.Update your Car Price");
 		System.out.println("3.Remove your car");
+		System.out.println("4.view your status");
 		
 	     int ch=sc.nextInt();
 		switch(ch)
@@ -37,10 +39,10 @@ public class TestCarOwner {
 		{
 		System.out.println("Enter Your Phone Number");
 		long mobileno=sc.nextLong();
-        ArrayList<CarOwner> al=obj.ViewYourCAr(mobileno);
+        ArrayList<CarOwner> al=obj.ViewYourCar(mobileno);
         for(CarOwner co:al)
         {
-        	System.out.println(co.getownerName()+"   "+co.getCardetail().getCarBrand()+"    "+co.getCardetail().getCarName()+"   "+co.getownerId()+"   "+co.getCardetail().getRegYear()+"   "+co.getCardetail().getVehicleIdNo()+"   "+co.getCardetail().getRegistrationNo()+"  "+co.getCardetail().getDrivenKm()+" "+co.getCardetail().getPrice());
+        	System.out.println(co.getownerName()+"   "+co.getCarDetail().getCarBrand()+"    "+co.getCarDetail().getCarName()+"   "+co.getownerId()+"   "+co.getCarDetail().getRegYear()+"   "+co.getCarDetail().getVehicleIdNo()+"   "+co.getCarDetail().getRegistrationNo()+"  "+co.getCarDetail().getDrivenKm()+" "+co.getCarDetail().getPrice()+""+co.getCarDetail().getCarAvailableCity());
         }
         if(al.isEmpty()) {
 			System.out.println(" Invalid phone number");
@@ -68,7 +70,7 @@ public class TestCarOwner {
 				System.out.println("Enter your car price");
 				Float f=sc.nextFloat();
 				cd.setPrice(f);
-				c.setCardetail(cd);
+				c.setCarDetail(cd);
 				obj.updateCarPrice(c);
 				break;
 			}
@@ -81,7 +83,7 @@ public class TestCarOwner {
 				cd.setCarId(sc.nextInt());
 				System.out.println("Enter your car price");
 			    cd.setPrice(sc.nextFloat());
-			    c.setCardetail(cd);
+			    c.setCarDetail(cd);
 				obj.updateCarPrice(c);
 				break;
 		
@@ -99,8 +101,19 @@ public class TestCarOwner {
 			int carOwnerId=sc.nextInt();
 			System.out.println("Enter your car id");
 			int carId=sc.nextInt();
-			coi.deletecarDetail(carOwnerId,carId);
+			coi.deleteCarDetail(carOwnerId,carId);
        break;
+		}
+		case 4:
+		{
+			System.out.println("enter your Mobileno");
+			Long mobileNo=sc.nextLong();
+			ArrayList<CarOrder> al=obj.ViewYourPlacedCar(mobileNo);
+			for(CarOrder ca:al)
+			{
+				System.out.println(+ca.getBuyerContactNo()+"   "+ca.getBuyerName()+"  "+ca.getAddress1()+"  "+ca.getAddress2()+"  "+ca.getPincode()+"  "+ca.getBuyerState()+"   "+ca.getCarId()+"  "+ca.getOrderId()+"  "+ca.getStatus()+"  "+ca.getDeliveredDate()+"    "+ca.getOrderedDate());
+			}
+			break;
 		}
 		}
     System.out.println("Do you want to continue");

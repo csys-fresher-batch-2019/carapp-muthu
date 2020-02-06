@@ -56,7 +56,7 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	public void addCarDetail(CarDetail cardetail) throws Exception {
-		PreparedStatement pst = null;
+		PreparedStatement pst=null ;
 		String query = "select seller_id,seller_contact_no,user_password from car_seller where user_password= '"
 				+ cardetail.getCarOwner().getPassword() + "'";
 		try (Connection con = ConnectionUtil.getConnection();) {
@@ -67,7 +67,7 @@ public class CarDetailImp implements CarDetailDAO {
 
 			} else if (cardetail.getCarOwner().getContactNo() != 0) {
 				query = query + " and  seller_contact_no=?";
-				pst = con.prepareStatement(query);
+				 pst = con.prepareStatement(query);
 
 				pst.setLong(1, cardetail.getContactNo());
 			}

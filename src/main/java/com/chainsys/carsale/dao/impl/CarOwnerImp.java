@@ -3,7 +3,7 @@ package com.chainsys.carsale.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,8 +21,8 @@ public class CarOwnerImp implements CarOwnerDAO {
 		String sqll = "select * from car_seller where seller_contact_no=?";
 
 		// Statement st=null;
-		try (Connection con = ConnectionUtil.getConnection(); Statement st = con.createStatement();) {
-			PreparedStatement ps = con.prepareStatement(sqll);
+		try (Connection con = ConnectionUtil.getConnection();PreparedStatement ps = con.prepareStatement(sqll);) {
+			
 			ps.setLong(1, mobileNo);
 			try (ResultSet rs = ps.executeQuery();) {
 				if (rs.next()) {

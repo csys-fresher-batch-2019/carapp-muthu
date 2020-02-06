@@ -1,9 +1,8 @@
-package carsale.OrderCar;
+package com.chainsys.carsale.dao;
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.TreeMap;
+
+import com.chainsys.carsale.model.CarOrder;
 
 public interface CarOrderDAO {
  public void orderCar(CarOrder carOrder) throws Exception;

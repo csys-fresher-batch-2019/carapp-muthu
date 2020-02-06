@@ -1,4 +1,4 @@
-package carsale;
+package com.chainsys.carsale.util;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

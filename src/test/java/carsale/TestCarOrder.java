@@ -6,14 +6,12 @@ import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import carsale.OrderCar.CarOrder;
-import carsale.OrderCar.CarOrderImp;
-import carsale.carDetail.CarDetail;
+import com.chainsys.carsale.dao.impl.CarOrderImp;
+import com.chainsys.carsale.model.CarOrder;
 
 public class TestCarOrder {
 
@@ -30,7 +28,7 @@ public class TestCarOrder {
 			switch (ch) {
 			case 1: {
 				LocalDate ldd = LocalDate.now();
-				
+
 				System.out.println("Enter the buyer name");
 				String buyerName = sc.next();
 				System.out.println("Enter the  buyer contact no");
@@ -41,16 +39,16 @@ public class TestCarOrder {
 				int sellerId = sc.nextInt();
 				System.out.println("Aru you apply Test Drive?");
 				String testDrive = sc.next();
-                System.out.println("Enter the Streetname");
-                String streetName=sc.next();
-                System.out.println("Enter the doorno");
-                String doorNo=sc.next();
-                System.out.println("Enter the city");
-                String city=sc.next();
-                System.out.println("Enter the state");
-                String state=sc.next();
-                System.out.println("Enter the pincode");
-                int pincode=sc.nextInt();
+				System.out.println("Enter the Streetname");
+				String streetName = sc.next();
+				System.out.println("Enter the doorno");
+				String doorNo = sc.next();
+				System.out.println("Enter the city");
+				String city = sc.next();
+				System.out.println("Enter the state");
+				String state = sc.next();
+				System.out.println("Enter the pincode");
+				int pincode = sc.nextInt();
 				CarOrderImp obj = new CarOrderImp();
 				CarOrder c = new CarOrder();
 				c.setBuyerName(buyerName);
@@ -62,7 +60,7 @@ public class TestCarOrder {
 				c.setAddress2(doorNo);
 				c.setCity(city);
 				c.setBuyerState(state);
-                c.setPincode(pincode);
+				c.setPincode(pincode);
 				obj.orderCar(c);
 				break;
 			}
@@ -88,10 +86,10 @@ public class TestCarOrder {
 
 				Date daa = Date.valueOf(ldd);
 				CarOrderImp co = new CarOrderImp();
-               System.out.println("Enter the order_id");
-               int orderId=sc.nextInt();
-				//System.out.println("enter the Delivery date");
-				//String dat = sc.next();
+				System.out.println("Enter the order_id");
+				int orderId = sc.nextInt();
+				// System.out.println("enter the Delivery date");
+				// String dat = sc.next();
 				ArrayList<CarOrder> al = co.getDeliveryCarDet(orderId);
 				for (CarOrder c : al) {
 					LocalDate deliveredDate = c.getDeliveredDate().toLocalDate();

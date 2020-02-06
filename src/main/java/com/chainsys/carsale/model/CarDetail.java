@@ -1,8 +1,6 @@
-package carsale.carDetail;
+package com.chainsys.carsale.model;
 
 import java.time.LocalDate;
-
-import carsale.ownerDetail.CarOwner;
 
  public class CarDetail {
 	 private int carOwnerId;
@@ -14,9 +12,9 @@ import carsale.ownerDetail.CarOwner;
 	private String regState;
 	private int regYear;
 	private String registrationNo;
-	private float drivenKm;
+	private int drivenKm;
 	private LocalDate updateDate;
-	private float price;
+	private int price;
 	private String status;
 	private String carAvailableCity;
     public int getIsOwner() {
@@ -105,10 +103,10 @@ import carsale.ownerDetail.CarOwner;
 	public void setRegistrationNo(String registrationNo) {
 		this.registrationNo = registrationNo;
 	}
-	public float getDrivenKm() {
+	public int getDrivenKm() {
 		return drivenKm;
 	}
-	public void setDrivenKm(float drivenKm) {
+	public void setDrivenKm(int drivenKm) {
 		this.drivenKm = drivenKm;
 	}
 	public LocalDate getUpdateDate() {
@@ -117,10 +115,10 @@ import carsale.ownerDetail.CarOwner;
 	public void setUpdateDate(LocalDate updateDate) {
 		this.updateDate = updateDate;
 	}
-	public float getPrice() {
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(float price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public String getStatus() {

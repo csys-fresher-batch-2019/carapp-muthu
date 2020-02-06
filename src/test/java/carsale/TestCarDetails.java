@@ -1,15 +1,12 @@
 package carsale;
-import carsale.ownerDetail.CarOwner;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
-
 import java.util.Scanner;
 
-import carsale.carDetail.CarDetail;
-import carsale.carDetail.CarDetailImp;
-
-import carsale.ownerDetail.CarOwnerImp;
+import com.chainsys.carsale.dao.impl.CarDetailImp;
+import com.chainsys.carsale.dao.impl.CarOwnerImp;
+import com.chainsys.carsale.model.CarDetail;
+import com.chainsys.carsale.model.CarOwner;
 public class TestCarDetails {
 	public static void main(String[] args) throws Exception
 	{
@@ -26,7 +23,11 @@ public class TestCarDetails {
 		System.out.println("3.get specific car information");
 		System.out.println("4.List out all available cars in specifc state");
 		System.out.println("5.list out specific car detail with seller");
-        System.out.println("6.Exit");
+		System.out.println("6.search by car price(above) and brand");
+        System.out.println("7.serach by car price(below) and Car Brand");
+        System.out.println("8.search by car Driven Kilometer");
+        System.out.println("9. search By Fuel Type");
+        System.out.println("10.Exit");
 		int cho=sc.nextInt();
 		switch(cho)
 		{
@@ -101,7 +102,7 @@ public class TestCarDetails {
 			System.out.println("Enter car Brand");
 			String carBrand=s.next();
 			System.out.println("Enter DrivenKm");
-			Float drivenKm=s.nextFloat();
+			int drivenKm=s.nextInt();
 			System.out.println("Enter transmission type");
 			String trType=s.next();
 			System.out.println("car Price");
@@ -171,7 +172,7 @@ public class TestCarDetails {
 			System.out.println("Enter car Brand");
 			String carBrand=s.next();
 			System.out.println("Enter DrivenKm");
-			Float drivenKm=s.nextFloat();
+			int drivenKm=s.nextInt();
 			System.out.println("Enter transmission type");
 			String trType=s.next();
 			System.out.println("car Price");
@@ -296,9 +297,70 @@ public class TestCarDetails {
 		}
 		case 6:
 		{
-			
+			System.out.println("Enter the minium car price");
+			float minPrice=sc.nextFloat();
+			System.out.println("Enter the car Brand");
+			String carBrand=sc.next();
+			ArrayList<CarDetail> ar=co.getCarDetailAbovePrice(minPrice,carBrand);
+			for(CarDetail cdr:ar)
+			{
+				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"  "+cdr.getStatus()+"   "+cdr.getRegistrationNo());
+				
+				}
+			if(ar.isEmpty())
+			{
+				System.out.println("oops!!! car not found");
+			}
+			break;
 			
 		}
+		case 7:
+		{
+			System.out.println("Enter the maximum car price");
+			float maxPrice=sc.nextFloat();
+			System.out.println("Enter the car Brand");
+			String carBrand=sc.next();
+			ArrayList<CarDetail> ar=co.getCarDetailBelowPrice(maxPrice,carBrand);
+			for(CarDetail cdr:ar)
+			{
+				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
+				
+				}
+			break;
+			
+		}
+		case 8:
+		{
+			System.out.println(" Kilometer start FROM:");
+			float start=sc.nextFloat();
+			System.out.println("Kilometer End TO:");
+			float end=sc.nextFloat();
+			ArrayList<CarDetail> ar=co.getCarDetailAboveDrivenKm(start,end);
+			for(CarDetail cdr:ar)
+			{
+				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
+				
+				}
+			if(ar.isEmpty())
+			{
+				System.out.println(" oops!!! car not found");
+			}
+			break;
+			
+		}
+		case 9:
+		{
+			System.out.println("Enter  FuelType:");
+			String fuelType=sc.next();
+			ArrayList<CarDetail> ar=co.getCarDetailUseFuelType(fuelType);
+			for(CarDetail cdr:ar)
+			{
+				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
+				
+			}
+			break;
+		}
+		
 		default:
 			System.out.println("Enter valid option");
 			break;

@@ -78,7 +78,6 @@ public class CarDetailImp implements CarDetailDAO {
 					Date updatedDate = Date.valueOf(cardetail.getUpdateDate());
 					String sql = "insert into car_detail(car_seller_id,car_id,car_brand,car_name,tr_type,fuel_type,reg_state,reg_year,driven_km,price,update_date,registration_no,vehicle_identification_no,car_available_city,is_owner)values(?,car_id_sq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 					System.out.println(sql);
-					// car_seller(seller_id,seller_name,seller_contact_no)values("+sellerId+",'"+ownerName+"',"+contactNO+")";
 					try (PreparedStatement pstt = con.prepareStatement(sql);) {
 						pstt.setInt(1, cardetail.getCarOwnerId());
 						pstt.setString(2, cardetail.getCarBrand());

@@ -1,6 +1,7 @@
 package carsale;
 
-import java.util.ArrayList;
+
+import java.util.List;
 import java.util.Scanner;
 
 import com.chainsys.carsale.dao.impl.CarOwnerImp;
@@ -32,7 +33,7 @@ public class TestCarOwner {
 			case 1: {
 				System.out.println("Enter Your Phone Number");
 				long mobileno = sc.nextLong();
-				ArrayList<CarOwner> al = obj.ViewYourCar(mobileno);
+				List<CarOwner> al = obj.ViewYourCar(mobileno);
 				for (CarOwner co : al) {
 					System.out.println(co.getownerName() + "   " + co.getCarDetail().getCarBrand() + "    "
 							+ co.getCarDetail().getCarName() + "   " + co.getownerId() + "   "
@@ -98,7 +99,7 @@ public class TestCarOwner {
 			case 4: {
 				System.out.println("enter your Mobileno");
 				Long mobileNo = sc.nextLong();
-				ArrayList<CarOrder> al = obj.ViewYourPlacedCar(mobileNo);
+				List<CarOrder> al = obj.ViewYourPlacedCar(mobileNo);
 				for (CarOrder ca : al) {
 					System.out.println(+ca.getBuyerContactNo() + "   " + ca.getBuyerName() + "  " + ca.getAddress1()
 							+ "  " + ca.getAddress2() + "  " + ca.getPincode() + "  " + ca.getBuyerState() + "   "

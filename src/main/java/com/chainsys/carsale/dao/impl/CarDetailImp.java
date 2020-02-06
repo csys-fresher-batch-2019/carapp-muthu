@@ -138,7 +138,7 @@ public class CarDetailImp implements CarDetailDAO {
 
 		//Connection con = null;
 		//PreparedStatement ps = null;
-		ArrayList<CarDetail> ar = new ArrayList<CarDetail>();
+		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=?";
 		
 		try (Connection con = TestConnection.getConnection();PreparedStatement ps = con.prepareStatement(sql);)
@@ -175,7 +175,7 @@ public class CarDetailImp implements CarDetailDAO {
 
 	public List<CarDetail> getCarDetail(String carBrand, String regState) throws Exception {
 		// TODO Auto-generated method stub
-		ArrayList<CarDetail> ar = new ArrayList<CarDetail>();
+		List<CarDetail> ar = new ArrayList<CarDetail>();
 		
 		String sql = "select * from car_detail where car_brand=? and  reg_state=?";
 				try (Connection con = TestConnection.getConnection();PreparedStatement ps = con.prepareStatement(sql);)
@@ -212,7 +212,7 @@ public class CarDetailImp implements CarDetailDAO {
 	public List<CarDetail> getDetailWithOwner(String carBrand) throws Exception {
 		// TODO Auto-generated method stub
 		
-		ArrayList<CarDetail> list = new ArrayList<CarDetail>();
+		List<CarDetail> list = new ArrayList<CarDetail>();
 		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=?";
 		
 		try (Connection con = TestConnection.getConnection();PreparedStatement ps = con.prepareStatement(sql);)
@@ -273,7 +273,7 @@ public class CarDetailImp implements CarDetailDAO {
 
 	public List<CarDetail> getUpdatedCar(String Status) throws Exception {
 		// TODO Auto-generated method stub
-		ArrayList<CarDetail> ar = new ArrayList<CarDetail>();
+		List<CarDetail> ar = new ArrayList<CarDetail>();
 
 		//Connection con = null;
 		//PreparedStatement pst = null;
@@ -320,15 +320,15 @@ public class CarDetailImp implements CarDetailDAO {
 		return null;
 	}
 	@Override
-	public ArrayList<CarDetail> getCarDetail(Float max, String carBrand) throws Exception {
+	public List<CarDetail> getCarDetail(Float max, String carBrand) throws Exception {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 
 	@Override
-	public ArrayList<CarDetail> getCarDetailAbovePrice(float min,String carBrand) throws Exception {
-		ArrayList<CarDetail> ar=new ArrayList<CarDetail>();
+	public List<CarDetail> getCarDetailAbovePrice(float min,String carBrand) throws Exception {
+		List<CarDetail> ar=new ArrayList<CarDetail>();
 		float max=900000000;
 		 String car_status="available";
 		String sql="select car_brand,car_name,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year from car_detail where price between ? and ? and car_brand IN(?) and status=? order by price asc";
@@ -366,7 +366,7 @@ public class CarDetailImp implements CarDetailDAO {
 
 	@Override
 	public List<CarDetail> getCarDetailBelowPrice(Float max, String carBrand) throws Exception {
-		ArrayList<CarDetail> ar=new ArrayList<CarDetail>();
+	List<CarDetail> ar=new ArrayList<CarDetail>();
 	   String carStatus="available";
 		String sql="select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where price<=? and  car_brand IN(?) and status=? order by price asc";
 		try(Connection con=TestConnection.getConnection();PreparedStatement ps=con.prepareStatement(sql))
@@ -402,7 +402,7 @@ public class CarDetailImp implements CarDetailDAO {
 	
 	@Override
 	public List<CarDetail> getCarDetailAboveDrivenKm(float startFrom, float endTo) throws Exception {
-		ArrayList<CarDetail> ar=new ArrayList<CarDetail>();
+		List<CarDetail> ar=new ArrayList<CarDetail>();
 		String carStatus="available";
 		String sql="select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where driven_km between ? and ?  and status=? order by driven_km asc";
 		try(Connection con=TestConnection.getConnection();PreparedStatement ps=con.prepareStatement(sql))
@@ -437,7 +437,7 @@ public class CarDetailImp implements CarDetailDAO {
 
 	@Override
 	public List<CarDetail> getCarDetailUseFuelType(String fuelType) throws Exception {
-		ArrayList<CarDetail> ar=new ArrayList<CarDetail>();
+		List<CarDetail> ar=new ArrayList<CarDetail>();
 		String sql="select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where fuel_type=?";
 		try(Connection con=TestConnection.getConnection();PreparedStatement ps=con.prepareStatement(sql))
 		{

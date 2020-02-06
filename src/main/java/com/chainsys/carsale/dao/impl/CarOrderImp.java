@@ -72,7 +72,7 @@ public class CarOrderImp implements CarOrderDAO {
 
 	public List<CarOrder> getCarDeleveryDate(int orderId) throws Exception {
 		// TODO Auto-generated method stub
-		ArrayList<CarOrder> lt = new ArrayList<CarOrder>();
+		List<CarOrder> lt = new ArrayList<CarOrder>();
 		// Connection con=null;
 		// PreparedStatement pst=null;
 		String sql = "select buyer_name ,order_id,car_id,delivered_date from car_order where order_id=?";
@@ -103,7 +103,7 @@ public class CarOrderImp implements CarOrderDAO {
 		// PreparedStatement pst=null;
 		String sql = "select c.car_name ,d.delivered_date,d.buyer_name from car_order d,car_detail c where order_id=?  and c.car_id=d.car_id ";
 
-		ArrayList<CarOrder> ts = new ArrayList<CarOrder>();
+		List<CarOrder> ts = new ArrayList<CarOrder>();
 		try (Connection con = TestConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);)
 		{
 			// LocalDate ld=LocalDate.parse(deliver);

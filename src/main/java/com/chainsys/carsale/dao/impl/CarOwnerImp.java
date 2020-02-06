@@ -87,7 +87,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 	}
 
 	public List<CarOwner> ViewYourCar(long mobileNo) throws Exception {
-		ArrayList<CarOwner> al = new ArrayList<CarOwner>();
+		List<CarOwner> al = new ArrayList<CarOwner>();
 		// Connection con=null;
 		// PreparedStatement ps=null;
 		String sql = "select * from car_seller s,car_detail c where s.seller_contact_no=? and s.seller_id=c.car_seller_id";
@@ -166,10 +166,10 @@ public class CarOwnerImp implements CarOwnerDAO {
 
 	}
 
-	public ArrayList<CarOrder> ViewYourPlacedCar(Long mobileNo) throws Exception {
+	public List<CarOrder> ViewYourPlacedCar(Long mobileNo) throws Exception {
 		//Connection con = null;
 		//PreparedStatement ps = null;
-		ArrayList<CarOrder> ar = new ArrayList<CarOrder>();
+		List<CarOrder> ar = new ArrayList<CarOrder>();
 		String sql = "select * from car_order where seller_id=(select seller_id from car_seller where seller_contact_no=?)";
 
 		try (Connection	con = TestConnection.getConnection();PreparedStatement ps = con.prepareStatement(sql);)

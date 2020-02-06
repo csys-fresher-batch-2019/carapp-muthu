@@ -1,6 +1,7 @@
 package carsale;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.chainsys.carsale.dao.impl.CarDetailImp;
@@ -250,7 +251,7 @@ public class TestCarDetails {
 			System.out.println("Enter the car status 1. Available 2. Not Available");
 			int choice=s.nextInt();
 			String status = choice ==1 ? "available" : "not available" ; 
-			ArrayList<CarDetail> al=cdi.getUpdatedCar(status);
+			List<CarDetail> al=cdi.getUpdatedCar(status);
 			for(CarDetail ss:al)
 			{
 				//System.out.println(ss.toString());
@@ -262,7 +263,7 @@ public class TestCarDetails {
 		{
 			System.out.println(" enter preffered Car Brand");
 			cd.setCarBrand(sc.next());
-			ArrayList<CarDetail>al=co.getCarDetail(cd.getCarBrand());
+			List<CarDetail>al=co.getCarDetail(cd.getCarBrand());
 			for(CarDetail cdl:al)
 			{
 			System.out.println(cdl.getCarName()+"   "+cdl.getCarBrand()+"   "+cdl.getTrType()+"    "+cdl.getFuelType()+"   "+cdl.getRegState()+"   "+cdl.getRegYear()+"   "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"    "+cdl.getStatus()+"   "+cdl.getRegistrationNo()+"    a"+cdl.getCarOwner().getownerName());
@@ -275,7 +276,7 @@ public class TestCarDetails {
 		    cd.setCarBrand(sc.next());
 		    System.out.println("Enter the state");
 		    cd.setRegState(sc.next());
-		    ArrayList<CarDetail> al=co.getCarDetail(cd.getCarBrand(),cd.getRegState());
+		    List<CarDetail> al=co.getCarDetail(cd.getCarBrand(),cd.getRegState());
 			for(CarDetail cdl:al)
 			{
 				//System.out.println(cdl.toString());
@@ -288,7 +289,7 @@ public class TestCarDetails {
 		{
 			System.out.println("Enter the car brand");
 			cd.setCarBrand(sc.next());
-		ArrayList<CarDetail> carList = co.getDetailWithOwner(cd.getCarBrand());
+		List<CarDetail> carList = co.getDetailWithOwner(cd.getCarBrand());
 		for (CarDetail carDetail : carList) {
 			
 	       System.out.println(carDetail);
@@ -301,7 +302,7 @@ public class TestCarDetails {
 			float minPrice=sc.nextFloat();
 			System.out.println("Enter the car Brand");
 			String carBrand=sc.next();
-			ArrayList<CarDetail> ar=co.getCarDetailAbovePrice(minPrice,carBrand);
+			List<CarDetail> ar=co.getCarDetailAbovePrice(minPrice,carBrand);
 			for(CarDetail cdr:ar)
 			{
 				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"  "+cdr.getStatus()+"   "+cdr.getRegistrationNo());
@@ -320,7 +321,7 @@ public class TestCarDetails {
 			float maxPrice=sc.nextFloat();
 			System.out.println("Enter the car Brand");
 			String carBrand=sc.next();
-			ArrayList<CarDetail> ar=co.getCarDetailBelowPrice(maxPrice,carBrand);
+			List<CarDetail> ar=co.getCarDetailBelowPrice(maxPrice,carBrand);
 			for(CarDetail cdr:ar)
 			{
 				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
@@ -335,7 +336,7 @@ public class TestCarDetails {
 			float start=sc.nextFloat();
 			System.out.println("Kilometer End TO:");
 			float end=sc.nextFloat();
-			ArrayList<CarDetail> ar=co.getCarDetailAboveDrivenKm(start,end);
+			List<CarDetail> ar=co.getCarDetailAboveDrivenKm(start,end);
 			for(CarDetail cdr:ar)
 			{
 				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
@@ -352,7 +353,7 @@ public class TestCarDetails {
 		{
 			System.out.println("Enter  FuelType:");
 			String fuelType=sc.next();
-			ArrayList<CarDetail> ar=co.getCarDetailUseFuelType(fuelType);
+			List<CarDetail> ar=co.getCarDetailUseFuelType(fuelType);
 			for(CarDetail cdr:ar)
 			{
 				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());

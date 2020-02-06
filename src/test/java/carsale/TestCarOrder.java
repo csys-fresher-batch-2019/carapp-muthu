@@ -90,7 +90,7 @@ public class TestCarOrder {
 				int orderId = sc.nextInt();
 				// System.out.println("enter the Delivery date");
 				// String dat = sc.next();
-				ArrayList<CarOrder> al = co.getDeliveryCarDet(orderId);
+				List<CarOrder> al = co.getDeliveryCarDet(orderId);
 				for (CarOrder c : al) {
 					LocalDate deliveredDate = c.getDeliveredDate().toLocalDate();
 					long days = Duration.between(ldd.atTime(0, 0), deliveredDate.atTime(0, 0)).toDays();

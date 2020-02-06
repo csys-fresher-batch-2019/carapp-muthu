@@ -1,6 +1,5 @@
 package carsale;
 
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -112,6 +111,6 @@ public class TestCarOwner {
 			System.out.println("Do you want to continue");
 			m = sc.next().charAt(0);
 		} while (m == 'y' || m == 'Y');
-
+sc.close();
 	}
 }

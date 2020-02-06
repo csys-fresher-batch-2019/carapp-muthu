@@ -11,7 +11,7 @@ import com.chainsys.carsale.dao.CarOwnerDAO;
 import com.chainsys.carsale.model.CarDetail;
 import com.chainsys.carsale.model.CarOrder;
 import com.chainsys.carsale.model.CarOwner;
-import com.chainsys.carsale.util.TestConnection;
+import com.chainsys.carsale.util.ConnectionUtil;
 
 public class CarOwnerImp implements CarOwnerDAO {
 
@@ -21,7 +21,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		String sqll = "select * from car_seller where seller_contact_no=?";
 
 		// Statement st=null;
-		try (Connection con = TestConnection.getConnection(); Statement st = con.createStatement();) {
+		try (Connection con = ConnectionUtil.getConnection(); Statement st = con.createStatement();) {
 			PreparedStatement ps = con.prepareStatement(sqll);
 			ps.setLong(1, mobileNo);
 			try (ResultSet rs = ps.executeQuery();) {
@@ -40,7 +40,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		// PreparedStatement pst=null;
 		String sql = "insert into car_seller(seller_id,seller_name,seller_contact_no,user_password,address1,address2,city,seller_state,pincode)values(seller_id_sq.nextval,?,?,?,?,?,?,?,?)";
 
-		try (Connection con = TestConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 
 			pst.setString(1, carOwner.getownerName());
 			pst.setLong(2, carOwner.getContactNo());
@@ -67,7 +67,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		// PreparedStatement pst=null;
 		String sqll = "select seller_id from car_seller where seller_id=?";
 
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sqll);) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sqll);) {
 			ps.setInt(1, carOwnerId);
 			try (ResultSet rs = ps.executeQuery();) {
 				if (rs.next()) {
@@ -91,7 +91,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		// Connection con=null;
 		// PreparedStatement ps=null;
 		String sql = "select * from car_seller s,car_detail c where s.seller_contact_no=? and s.seller_id=c.car_seller_id";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql);)
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);)
 
 		{
 			// String sql="select seller_id from car_seller where
@@ -133,7 +133,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		// PreparedStatement ps = null;
 		String sql = null;
 		CarDetail cardetail = carOwner.getCarDetail();
-		try (Connection con = TestConnection.getConnection();) {
+		try (Connection con = ConnectionUtil.getConnection();) {
 
 			if (carOwner.getownerId() != 0) {
 				// sql = "update car_detail cd set cd.price="+cardetail.getPrice()+"where car_id
@@ -172,7 +172,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		List<CarOrder> ar = new ArrayList<CarOrder>();
 		String sql = "select * from car_order where seller_id=(select seller_id from car_seller where seller_contact_no=?)";
 
-		try (Connection	con = TestConnection.getConnection();PreparedStatement ps = con.prepareStatement(sql);)
+		try (Connection con = ConnectionUtil.getConnection();PreparedStatement ps = con.prepareStatement(sql);)
 		{
 			
 			ps.setLong(1, mobileNo);

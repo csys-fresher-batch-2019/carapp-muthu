@@ -10,17 +10,16 @@ import java.util.List;
 import com.chainsys.carsale.dao.CarDetailDAO;
 import com.chainsys.carsale.model.CarDetail;
 import com.chainsys.carsale.model.CarOwner;
-import com.chainsys.carsale.util.TestConnection;
+import com.chainsys.carsale.util.ConnectionUtil;
+
 
 public class CarDetailImp implements CarDetailDAO {
 
 	public int getSellerId(Long mobileNo, String password) throws Exception {
-		// int carSellerId;
-		// String passwordd;
-		// Long contactNo;
+
 		int sellerId = 0;
 		String sql = "select seller_id from car_seller where seller_contact_no=?  and user_password=?";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
 			ps.setLong(1, mobileNo);
 			ps.setString(2, password);
 			try (ResultSet rs = ps.executeQuery();) {
@@ -39,7 +38,7 @@ public class CarDetailImp implements CarDetailDAO {
 	public int verifyUser(int sellerIdd, String password) throws Exception {
 		int sellerId = 0;
 		String sql = "select seller_id from car_seller where seller_id=?  and user_password=?";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			pst.setInt(1, sellerIdd);
 			pst.setString(2, password);
 
@@ -57,16 +56,10 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	public void addCarDetail(CarDetail cardetail) throws Exception {
-		// TODO Auto-generated method stub
-		// Scanner s = new Scanner(System.in);
-
-		// Connection con = null;
 		PreparedStatement pst = null;
-		// PreparedStatement pstt = null;
-		// ResultSet rs=null;
 		String query = "select seller_id,seller_contact_no,user_password from car_seller where user_password= '"
 				+ cardetail.getCarOwner().getPassword() + "'";
-		try (Connection con = TestConnection.getConnection();) {
+		try (Connection con = ConnectionUtil.getConnection();) {
 			if (cardetail.getCarOwnerId() != 0) {
 				query = query + " and seller_id=?";
 				pst = con.prepareStatement(query);
@@ -87,7 +80,6 @@ public class CarDetailImp implements CarDetailDAO {
 					System.out.println(sql);
 					// car_seller(seller_id,seller_name,seller_contact_no)values("+sellerId+",'"+ownerName+"',"+contactNO+")";
 					try (PreparedStatement pstt = con.prepareStatement(sql);) {
-						// int row=smt.executeUpdate(sql);
 						pstt.setInt(1, cardetail.getCarOwnerId());
 						pstt.setString(2, cardetail.getCarBrand());
 						pstt.setString(3, cardetail.getCarName());
@@ -98,7 +90,6 @@ public class CarDetailImp implements CarDetailDAO {
 						pstt.setFloat(8, cardetail.getDrivenKm());
 						pstt.setFloat(9, cardetail.getPrice());
 						pstt.setDate(10, updatedDate);
-						// pst.setString(11, cardetail.status);
 						pstt.setString(11, cardetail.getRegistrationNo());
 						pstt.setString(12, cardetail.getVehicleIdNo());
 						pstt.setString(13, cardetail.getCarAvailableCity());
@@ -107,11 +98,11 @@ public class CarDetailImp implements CarDetailDAO {
 						System.out.println(rows);
 					}
 				} else {
-					throw new Exception("Invalid Data");
+					System.out.println("Invalid Data");
 				}
+
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -120,12 +111,10 @@ public class CarDetailImp implements CarDetailDAO {
 
 	public List<CarDetail> getCarDetail(String carName) throws Exception {
 
-		// Connection con = null;
-		// PreparedStatement ps = null;
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=?";
 
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
 			ps.setString(1, carName);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
@@ -140,8 +129,6 @@ public class CarDetailImp implements CarDetailDAO {
 					c.setPrice(rs.getInt("price"));
 					c.setStatus(rs.getString("status"));
 					c.setRegistrationNo(rs.getString("registration_no"));
-					// c.vehicleIdNo=rs.getString("vehicle_identification_no");
-
 					CarOwner carowner = new CarOwner();
 					carowner.setownerName(rs.getString("seller_name"));
 					c.setCarOwner(carowner);
@@ -160,7 +147,7 @@ public class CarDetailImp implements CarDetailDAO {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 
 		String sql = "select * from car_detail where car_brand=? and  reg_state=?";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
 			System.out.println(sql);
 
 			ps.setString(1, carBrand);
@@ -190,27 +177,18 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	public List<CarDetail> getDetailWithOwner(String carBrand) throws Exception {
-		// TODO Auto-generated method stub
 
 		List<CarDetail> list = new ArrayList<CarDetail>();
 		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=?";
 
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
 
 			System.out.println(sql);
 
 			ps.setString(1, carBrand);
 			try (ResultSet rss = ps.executeQuery();) {
 				while (rss.next()) {
-					/*
-					 * String trType=rss.getString("tr_type"); String
-					 * fuelType=rss.getString("fuel_type"); String
-					 * regstate=rss.getString("reg_state"); int regYear=rss.getInt("reg_year"); int
-					 * drivenkm=rss.getInt("driven_km"); int price=rss.getInt("price"); String
-					 * status=rss.getString("status"); int sellerId=rss.getInt("seller_id"); String
-					 * sellername=rss.getString("seller_name"); Long
-					 * sellerContact=rss.getLong("seller_contact_no");
-					 */
+					
 					// 1 row info -> storing in 1 object
 					CarDetail cd = new CarDetail();
 					cd.setCarId(rss.getInt("car_id"));
@@ -231,17 +209,14 @@ public class CarDetailImp implements CarDetailDAO {
 					CarOwner carowner = new CarOwner();
 					carowner.setownerName(rss.getString("seller_name"));
 					carowner.setownerId(rss.getInt("seller_id"));// instread of carowner.ownerid =
-																	// rss.getInt("seller_id");
+																	
 					carowner.setContactNo(rss.getLong("seller_contact_no"));
 
 					cd.setCarOwner(carowner);
 
 					// 2. Add each row data to list
 					list.add(cd);
-					// System.out.println(sellerId+""+sellername+""+sellerContact+""+carName+"
-					// "+carBrand+" "+trType+" "+fuelType+" "+regstate+" "+regYear+" "+drivenkm+"
-					// "+price+" "+status);
-				}
+					}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -251,15 +226,12 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	public List<CarDetail> getUpdatedCar(String Status) throws Exception {
-		// TODO Auto-generated method stub
+		
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 
-		// Connection con = null;
-		// PreparedStatement pst = null;
+		
 		String sql = "select * from car_detail cd, car_seller s where cd.car_seller_id = s.seller_id and cd.status=?";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-			// String sql="Select * from car_detail ,car_owner where Status=(select from car
-			// car_owner
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			System.out.println(sql);
 
 			pst.setString(1, Status);
@@ -293,7 +265,7 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	public List<CarDetail> getCarDetail(String carName, String carBrand, String fuleType) throws Exception {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -309,7 +281,7 @@ public class CarDetailImp implements CarDetailDAO {
 		float max = 900000000;
 		String car_status = "available";
 		String sql = "select car_brand,car_name,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year from car_detail where price between ? and ? and car_brand IN(?) and status=? order by price asc";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, min);
 			ps.setFloat(2, max);
 			ps.setString(3, carBrand);
@@ -342,7 +314,7 @@ public class CarDetailImp implements CarDetailDAO {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String carStatus = "available";
 		String sql = "select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where price<=? and  car_brand IN(?) and status=? order by price asc";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, max);
 			ps.setString(2, carBrand);
 			ps.setString(3, carStatus);
@@ -374,7 +346,7 @@ public class CarDetailImp implements CarDetailDAO {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String carStatus = "available";
 		String sql = "select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where driven_km between ? and ?  and status=? order by driven_km asc";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, startFrom);
 			ps.setFloat(2, endTo);
 			ps.setString(3, carStatus);
@@ -405,7 +377,7 @@ public class CarDetailImp implements CarDetailDAO {
 	public List<CarDetail> getCarDetailUseFuelType(String fuelType) throws Exception {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String sql = "select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where fuel_type=?";
-		try (Connection con = TestConnection.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, fuelType);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {

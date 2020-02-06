@@ -3,10 +3,8 @@ package carsale;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.Date;
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,8 +25,7 @@ public class TestCarOrder {
 			int ch = sc.nextInt();
 			switch (ch) {
 			case 1: {
-				LocalDate ldd = LocalDate.now();
-
+				//LocalDate ldd = LocalDate.now();
 				System.out.println("Enter the buyer name");
 				String buyerName = sc.next();
 				System.out.println("Enter the  buyer contact no");
@@ -81,15 +78,13 @@ public class TestCarOrder {
 				break;
 			}
 			case 3: {
-				CarOrder cc = new CarOrder();
+				
 				LocalDate ldd = LocalDate.now();
 
-				Date daa = Date.valueOf(ldd);
+				//Date daa = Date.valueOf(ldd);
 				CarOrderImp co = new CarOrderImp();
 				System.out.println("Enter the order_id");
 				int orderId = sc.nextInt();
-				// System.out.println("enter the Delivery date");
-				// String dat = sc.next();
 				List<CarOrder> al = co.getDeliveryCarDet(orderId);
 				for (CarOrder c : al) {
 					LocalDate deliveredDate = c.getDeliveredDate().toLocalDate();
@@ -97,13 +92,15 @@ public class TestCarOrder {
 
 					System.out.println(c.getCarName() + " " + deliveredDate + " " + c.getBuyerName());
 					if (deliveredDate.isBefore(ldd)) {
-						// LocalDate ld1=c.getDeliveredDate().toLocalDate();
-						// LocalDate d=ldd.minus(1,ChronoUnit.DAYS);
-
+						/*
+						 * LocalDate ld1=c.getDeliveredDate().toLocalDate(); LocalDate
+						 * d=ldd.minus(1,ChronoUnit.DAYS); Date dd=new
+						 * Date((c.deliveredDate).getTime()-daa.getTime()); java.util.Date ddate=new
+						 * Date(deliveredDate.getTime()); java.util.Date currentDate=new
+						 * java.util.Date();
+						 */
 					} else if (deliveredDate.isAfter(ldd)) {
-						// Date dd=new Date((c.deliveredDate).getTime()-daa.getTime());
-						// java.util.Date ddate=new Date(deliveredDate.getTime());
-						// java.util.Date currentDate=new java.util.Date();
+
 						System.out.println(days + "  more days!!!");
 
 					} else {
@@ -117,13 +114,10 @@ public class TestCarOrder {
 				System.out.println("enter the valid option");
 				break;
 			}
-			// TestCarOrder.callOrder();
-			// TestCarOrder.addCarInFile();
-			// TestCarOrder.callGetDelivery();
-			// TestCarOrder.callupdate();
 			System.out.println("Do you want to continue Y/n");
 			m = sc.next().charAt(0);
 		} while (m == 'y' || m == 'Y');
+		sc.close();
 	}
 
 	/*

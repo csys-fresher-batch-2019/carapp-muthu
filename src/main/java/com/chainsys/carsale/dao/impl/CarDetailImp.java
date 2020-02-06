@@ -60,36 +60,36 @@ public class CarDetailImp implements CarDetailDAO {
 		// TODO Auto-generated method stub
 		// Scanner s = new Scanner(System.in);
 
-		Connection con = null;
-		PreparedStatement pst = null;
-		PreparedStatement pstt = null;
-		ResultSet rs=null;
-
-		try {
-			con = TestConnection.getConnection();
-			String query = "select seller_id,seller_contact_no,user_password from car_seller where user_password= '"
-					+ cardetail.getCarOwner().getPassword() + "'";
-			
+	//	Connection con = null;
+		//PreparedStatement pst = null;
+		//PreparedStatement pstt = null;
+		//ResultSet rs=null;
+		String query = "select seller_id,seller_contact_no,user_password from car_seller where user_password= '"
+				+ cardetail.getCarOwner().getPassword() + "'";
+		try (Connection con = TestConnection.getConnection();PreparedStatement pst = con.prepareStatement(query);)
+{
                   if (cardetail.getCarOwnerId() != 0) {
 				query = query + " and seller_id=?";
-				pst = con.prepareStatement(query);
+				
 				pst.setInt(1, cardetail.getCarOwnerId());
 
 			} else if (cardetail.getCarOwner().getContactNo() != 0) {
 				query = query + " and  seller_contact_no=?";
+				//pst = con.prepareStatement(query);
 
-				pst = con.prepareStatement(query);
-				pst.setLong(1, cardetail.getContactNo());
+								pst.setLong(1, cardetail.getContactNo());
 			}
 			System.out.println(query);
-			rs = pst.executeQuery();
+			try(ResultSet rs = pst.executeQuery();)
+			{
 
 			if (rs.next()) {
 				Date updatedDate = Date.valueOf(cardetail.getUpdateDate());
 				String sql = "insert into car_detail(car_seller_id,car_id,car_brand,car_name,tr_type,fuel_type,reg_state,reg_year,driven_km,price,update_date,registration_no,vehicle_identification_no,car_available_city,is_owner)values(?,car_id_sq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				System.out.println(sql);
 				// car_seller(seller_id,seller_name,seller_contact_no)values("+sellerId+",'"+ownerName+"',"+contactNO+")";
-				pstt = con.prepareStatement(sql);
+				try(PreparedStatement pstt = con.prepareStatement(sql);)
+				{
 				// int row=smt.executeUpdate(sql);
 				pstt.setInt(1, cardetail.getCarOwnerId());
 				pstt.setString(2, cardetail.getCarBrand());
@@ -108,31 +108,20 @@ public class CarDetailImp implements CarDetailDAO {
 				pstt.setInt(14, cardetail.getIsOwner());
 				int rows = pstt.executeUpdate();
 				System.out.println(rows);
-			} else {
+			} 
+			}else {
 				throw new Exception("Invalid Data");
 			}
-		} catch (Exception e) {
+		}
+}catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} finally {
-			if(rs!=null)
-			{
-				rs.close();
-			}
-			if (pstt != null) {
-				pstt.close();
-			}
-			if (pst != null) {
-				pst.close();
-			}
-			if (con != null) {
-				con.close();
-			}
+		} 
 		}
 
 		// s.close();
 
-	}
+	
 
 	public List<CarDetail> getCarDetail(String carName) throws Exception {
 

@@ -105,6 +105,12 @@ public class CarDetailImp implements CarDetailDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		finally
+		{
+			if(pst!=null){
+				pst.close();
+			}
+		}
 	}
 
 	// s.close();

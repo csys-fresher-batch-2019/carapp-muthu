@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.chainsys.carsale.dao.CarOrderDAO;
 import com.chainsys.carsale.model.CarOrder;
@@ -69,7 +70,7 @@ public class CarOrderImp implements CarOrderDAO {
 	}
 	
 
-	public ArrayList<CarOrder> getCarDeleveryDate(int orderId) throws Exception {
+	public List<CarOrder> getCarDeleveryDate(int orderId) throws Exception {
 		// TODO Auto-generated method stub
 		ArrayList<CarOrder> lt = new ArrayList<CarOrder>();
 		// Connection con=null;
@@ -96,7 +97,7 @@ public class CarOrderImp implements CarOrderDAO {
 		return lt;
 	}
 
-	public ArrayList<CarOrder> getDeliveryCarDet(int orderId) throws Exception {
+	public List<CarOrder> getDeliveryCarDet(int orderId) throws Exception {
 		// TODO Auto-generated method stub
 		// Connection con =null;
 		// PreparedStatement pst=null;

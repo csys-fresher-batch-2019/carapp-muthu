@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.chainsys.carsale.dao.CarOwnerDAO;
 import com.chainsys.carsale.model.CarDetail;
@@ -85,7 +86,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		}
 	}
 
-	public ArrayList<CarOwner> ViewYourCar(long mobileNo) throws Exception {
+	public List<CarOwner> ViewYourCar(long mobileNo) throws Exception {
 		ArrayList<CarOwner> al = new ArrayList<CarOwner>();
 		// Connection con=null;
 		// PreparedStatement ps=null;

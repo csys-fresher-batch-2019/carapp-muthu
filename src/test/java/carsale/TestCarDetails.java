@@ -1,6 +1,5 @@
 package carsale;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,7 +12,6 @@ public class TestCarDetails {
 	{
 		CarDetailImp co=new CarDetailImp();
 		CarDetail cd=new CarDetail();
-		TestCarDetails c=new TestCarDetails();
 		Scanner sc=new Scanner(System.in);
 	    
 	    char m;
@@ -34,14 +32,14 @@ public class TestCarDetails {
 		{
 		case 1:
 		{
-			Scanner s=new Scanner(System.in);
+			
 			char mesg;
 			do {
 				
 				System.out.println("1.new User");
 				System.out.println("2.Existing User");
 				System.out.println("3.Exit");
-			    int ch=s.nextInt();
+			    int ch=sc.nextInt();
 			    switch(ch)
 			    {
 			    case 1:
@@ -49,25 +47,25 @@ public class TestCarDetails {
 			    					
 			        CarOwner coo=new CarOwner();
 			       	System.out.println("Enter the contact no");
-					long mobileno=s.nextLong();
+					long mobileno=sc.nextLong();
 					CarOwnerImp coi=new CarOwnerImp();
 					boolean exists = coi.isCarOwnerAlreadyRegistered(mobileno);
 					if(exists==false)
 					{
 				    System.out.println("Enter the seller name");
-					coo.setownerName(s.next());
+					coo.setownerName(sc.next());
 					System.out.println("Enter the password");
-					coo.setPassword(s.next());
+					coo.setPassword(sc.next());
 					System.out.println("Enter the Street name");
-					coo.setAddress1(s.next());
+					coo.setAddress1(sc.next());
 					System.out.println("Enter the street No and door no");
-					coo.setAddress2(s.next());
+					coo.setAddress2(sc.next());
 					System.out.println("Enter the city");
-					coo.setCity(s.next());
+					coo.setCity(sc.next());
 					System.out.println("Enter the state");
-					coo.setState(s.next());
+					coo.setState(sc.next());
 					System.out.println("Enter pincode");
-					coo.setPincode(s.nextInt());
+					coo.setPincode(sc.nextInt());
 					coo.setContactNo(mobileno);
 					CarOwnerImp coii=new CarOwnerImp();
 					coii.AddCarOwner(coo);
@@ -85,45 +83,45 @@ public class TestCarDetails {
 			{
 	        System.out.println("choose your Login option");
 	        System.out.println("press 1 for Seller id or 2 for mobile no");
-	        int choice=s.nextInt();
+	        int choice=sc.nextInt();
 	        switch(choice)
 	        {
 	        case 1:
 	        {
 	     	           	System.out.println("Enter the  seller ID");
-	     	int sellerId=s.nextInt();
+	     	int sellerId=sc.nextInt();
 	        	System.out.println("Enter your password");
-			String pass=s.next();
+			String pass=sc.next();
 			CarDetailImp ci=new CarDetailImp();
 			int sellerIdd=ci.verifyUser(sellerId, pass);
 			if(sellerIdd!=0)
 			{
 			System.out.println("Enter car name");
-			String carName=s.next();
+			String carName=sc.next();
 			System.out.println("Enter car Brand");
-			String carBrand=s.next();
+			String carBrand=sc.next();
 			System.out.println("Enter DrivenKm");
-			int drivenKm=s.nextInt();
+			int drivenKm=sc.nextInt();
 			System.out.println("Enter transmission type");
-			String trType=s.next();
+			String trType=sc.next();
 			System.out.println("car Price");
-			int price=s.nextInt();
+			int price=sc.nextInt();
 			System.out.println("Enter the state");
-			String regState=s.next();
+			String regState=sc.next();
 			System.out.println("Enter the fuel Type");
-			String fuelType=s.next();
+			String fuelType=sc.next();
 			//System.out.println("Enter the status ");
 			//String status=s.next();
 			System.out.println("Enter the register year");
-			int regYear=s.nextInt();
+			int regYear=sc.nextInt();
 			System.out.println("enter the car available city");
-			String carAvailabeCity=s.next();
+			String carAvailabeCity=sc.next();
 			System.out.println("Enter the Registration No");
-            String registrationNo=s.next();
+            String registrationNo=sc.next();
             System.out.println("Enter the  vehicle identifcation no");
-            String vehicleNo=s.next();
+            String vehicleNo=sc.next();
             System.out.println(" are you  owner(press 1) or intermediatary(press 0)");
-            int isOwner=s.nextInt();
+            int isOwner=sc.nextInt();
 			LocalDate updatedDate=LocalDate.now();
 			
 			CarOwner cown=new CarOwner();
@@ -159,41 +157,41 @@ public class TestCarDetails {
 	        {
 	        	CarOwner car=new CarOwner();
 	           	System.out.println("Enter the  Mobile Number");
-	     	  Long mobileNo=s.nextLong();
+	     	  Long mobileNo=sc.nextLong();
 	           	car.setContactNo(mobileNo);
 	        	System.out.println("Enter your password");
-			  String password=s.next();
+			  String password=sc.next();
 	        	car.setPassword(password);
 			CarDetailImp ci=new CarDetailImp();
 			int sellerId=ci.getSellerId(mobileNo,password);
 			if(sellerId!=0)
 			{
 			System.out.println("Enter car name");
-			String carName=s.next();
+			String carName=sc.next();
 			System.out.println("Enter car Brand");
-			String carBrand=s.next();
+			String carBrand=sc.next();
 			System.out.println("Enter DrivenKm");
-			int drivenKm=s.nextInt();
+			int drivenKm=sc.nextInt();
 			System.out.println("Enter transmission type");
-			String trType=s.next();
+			String trType=sc.next();
 			System.out.println("car Price");
-			int price=s.nextInt();
+			int price=sc.nextInt();
 			System.out.println("Enter the state");
-			String regState=s.next();
+			String regState=sc.next();
 			System.out.println("Enter the fuel Type");
-			String fuelType=s.next();
+			String fuelType=sc.next();
 			//System.out.println("Enter the status ");
 			//String status=s.next();
 			System.out.println("Enter the register year");
-			int regYear=s.nextInt();
+			int regYear=sc.nextInt();
 			System.out.println("enter the car available city");
-			String carAvailabeCity=s.next();
+			String carAvailabeCity=sc.next();
 			System.out.println("Enter the Registration No");
-            String registrationNo=s.next();
+            String registrationNo=sc.next();
             System.out.println("Enter the  vehicle identifcation no");
-            String vehicleNo=s.next();
+            String vehicleNo=sc.next();
             System.out.println( "are you  owner(press 1) or intermediatary(press 0)");
-            int isOwner=s.nextInt();
+            int isOwner=sc.nextInt();
 			LocalDate updatedDate=LocalDate.now();
 			
 		    CarDetail cardetail = new CarDetail();
@@ -224,7 +222,7 @@ public class TestCarDetails {
 	        }
 	        }
 	        System.out.println("Do you want to continue");
-	        msg=s.next().charAt(0);
+	        msg=sc.next().charAt(0);
 	       	} while(msg=='y'||msg=='y');    
 	        break;
 		}
@@ -236,7 +234,7 @@ public class TestCarDetails {
 			System.out.println("Enter the valid option");
 		}
 			    System.out.println("Do You want to continue y/n");
-			    mesg=s.next().charAt(0);	   
+			    mesg=sc.next().charAt(0);	   
 			    }while(mesg=='y' || mesg=='Y');
 				
 	
@@ -247,9 +245,9 @@ public class TestCarDetails {
 		case 2:
 		{
 			CarDetailImp cdi=new CarDetailImp();
-			Scanner s=new Scanner(System.in);
+			
 			System.out.println("Enter the car status 1. Available 2. Not Available");
-			int choice=s.nextInt();
+			int choice=sc.nextInt();
 			String status = choice ==1 ? "available" : "not available" ; 
 			List<CarDetail> al=cdi.getUpdatedCar(status);
 			for(CarDetail ss:al)
@@ -369,13 +367,10 @@ public class TestCarDetails {
 	System.out.println("Do You want to continue y/n");
      m=sc.next().charAt(0);
         }while(m=='y'||m=='Y');
+		sc.close();
 	}
 	
-		public void testinsert() throws Exception 
-		{
-		
-		}
-					
+			
 }
 		
 		

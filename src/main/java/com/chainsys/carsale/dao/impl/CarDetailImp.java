@@ -56,7 +56,7 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	public void addCarDetail(CarDetail cardetail) throws Exception {
-		PreparedStatement pst=null ;
+		PreparedStatement pst =null;
 		String query = "select seller_id,seller_contact_no,user_password from car_seller where user_password= '"
 				+ cardetail.getCarOwner().getPassword() + "'";
 		try (Connection con = ConnectionUtil.getConnection();) {
@@ -230,7 +230,7 @@ public class CarDetailImp implements CarDetailDAO {
 		return list;
 	}
 
-	public List<CarDetail> getUpdatedCar(String Status) throws Exception {
+	public List<CarDetail> getUpdatedCar(String status) throws Exception {
 		
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 
@@ -239,7 +239,7 @@ public class CarDetailImp implements CarDetailDAO {
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
 			System.out.println(sql);
 
-			pst.setString(1, Status);
+			pst.setString(1, status);
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
 					CarDetail c = new CarDetail();

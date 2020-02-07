@@ -36,6 +36,7 @@ public class TestCarOrder {
 				int sellerId = sc.nextInt();
 				System.out.println("Aru you apply Test Drive?");
 				String testDrive = sc.next();
+				System.out.println("Enter Delivery Address");
 				System.out.println("Enter the Streetname");
 				String streetName = sc.next();
 				System.out.println("Enter the doorno");

@@ -1,6 +1,5 @@
 package com.chainsys.carsale.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chainsys.carsale.model.CarOrder;

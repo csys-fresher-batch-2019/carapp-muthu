@@ -1,6 +1,5 @@
 package com.chainsys.carsale.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.chainsys.carsale.model.CarDetail;
@@ -14,7 +13,7 @@ public interface CarDetailDAO {
 
 	public List<CarDetail> getDetailWithOwner(String carBrand) throws Exception;
 
-	public List<CarDetail> getUpdatedCar(String Status) throws Exception;
+	public List<CarDetail> getUpdatedCar(String status) throws Exception;
 
 	public List<CarDetail> getCarDetail(String carName, String carBrand, String fuleType) throws Exception;
 

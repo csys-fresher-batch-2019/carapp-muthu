@@ -71,7 +71,7 @@ public class TestCarDetails {
 					coo.setPincode(sc.nextInt());
 					coo.setContactNo(mobileno);
 					CarOwnerImp coii=new CarOwnerImp();
-					coii.AddCarOwner(coo);
+					coii.addCarOwner(coo);
 					}
 					else
 					{

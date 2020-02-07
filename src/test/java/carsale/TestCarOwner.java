@@ -34,7 +34,7 @@ public class TestCarOwner {
 			case 1: {
 				log.getInput("Enter Your Phone Number");
 				long mobileno = sc.nextLong();
-				List<CarOwner> al = obj.ViewYourCar(mobileno);
+				List<CarOwner> al = obj.viewYourCar(mobileno);
 				for (CarOwner co : al) {
 					log.info(co.getownerName() + "   " + co.getCarDetail().getCarBrand() + "    "
 							+ co.getCarDetail().getCarName() + "   " + co.getownerId() + "   "
@@ -100,7 +100,7 @@ public class TestCarOwner {
 			case 4: {
 				log.getInput("enter your Mobileno");
 				Long mobileNo = sc.nextLong();
-				List<CarOrder> al = obj.ViewYourPlacedCar(mobileNo);
+				List<CarOrder> al = obj.viewYourPlacedCar(mobileNo);
 				for (CarOrder ca : al) {
 					log.info(+ca.getBuyerContactNo() + "   " + ca.getBuyerName() + "  " + ca.getAddress1()
 							+ "  " + ca.getAddress2() + "  " + ca.getPincode() + "  " + ca.getBuyerState() + "   "

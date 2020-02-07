@@ -3,17 +3,26 @@ package com.chainsys.carsale.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.chainsys.carsale.dao.CarOrderDAO;
+import com.chainsys.carsale.logger.Logger;
 import com.chainsys.carsale.model.CarOrder;
 import com.chainsys.carsale.util.ConnectionUtil;
+import com.chainsys.carsale.util.DbException;
 
 public class CarOrderImp implements CarOrderDAO {
-
-	public void orderCar(CarOrder carOrder) throws Exception {
+	private static final Logger log = Logger.getInstance();
+	static final String seller_id = "seller_id";
+	private static final String buyer_name = "buyer_name";
+	private static final String order_id = "order_id";
+	private static final String delivered_date = "delivered_date";
+	private static final String car_name = "car_name";
+	private static final String car_id = "car_id";
+		public void orderCar(CarOrder carOrder) throws DbException  {
 		String check = " select car_id  from car_detail where car_id = ?";
 
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(check);) {
@@ -23,7 +32,7 @@ public class CarOrderImp implements CarOrderDAO {
 
 				if (rs.next()) {
 
-					int carId = rs.getInt("car_id");
+					int carId = rs.getInt(car_id);
 					String sql = "insert into car_order(order_id,buyer_name,buyer_contact_number,car_id,seller_id,test_drive,address1,address2,city,buyer_state,pincode)values(order_id_sq.nextval,?,?,?,?,?,?,?,?,?,?)";
 					System.out.println(sql);
 					try (Statement stt = con.createStatement(); PreparedStatement pst = con.prepareStatement(sql);) {
@@ -54,13 +63,13 @@ public class CarOrderImp implements CarOrderDAO {
 			}
 		}
 
-		catch (Exception e) {
-			e.printStackTrace();
+		catch ( SQLException e) {
+			log.error(e);
 
 		}
 	}
 
-	public List<CarOrder> getCarDeleveryDate(int orderId) throws Exception {
+	public List<CarOrder> getCarDeleveryDate(int orderId) throws DbException {
 		// TODO Auto-generated method stub
 		List<CarOrder> lt = new ArrayList<CarOrder>();
 		String sql = "select buyer_name ,order_id,car_id,delivered_date from car_order where order_id=?";
@@ -71,21 +80,21 @@ public class CarOrderImp implements CarOrderDAO {
 
 				while (rs.next()) {
 					CarOrder c = new CarOrder();
-					c.setBuyerName(rs.getString("buyer_name"));
-					c.setOrderId(rs.getInt("order_id"));
-					c.setCarId(rs.getInt("car_id"));
-					c.setDeliveredDate(rs.getDate("delivered_date"));
+					c.setBuyerName(rs.getString(buyer_name));
+					c.setOrderId(rs.getInt(order_id));
+					c.setCarId(rs.getInt(car_id));
+					c.setDeliveredDate(rs.getDate(delivered_date));
 					lt.add(c);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
 		}
 
 		return lt;
 	}
 
-	public List<CarOrder> getDeliveryCarDet(int orderId) throws Exception {
+	public List<CarOrder> getDeliveryCarDet(int orderId) throws DbException {
 		// TODO Auto-generated method stub
 		// Connection con =null;
 		// PreparedStatement pst=null;
@@ -101,22 +110,22 @@ public class CarOrderImp implements CarOrderDAO {
 			try (ResultSet rs = pst.executeQuery();) {
 				while (rs.next()) {
 					CarOrder cc = new CarOrder();
-					cc.setCarName(rs.getString("car_name"));
-					cc.setDeliveredDate(rs.getDate("delivered_date"));
-					cc.setBuyerName(rs.getString("buyer_name"));
+					cc.setCarName(rs.getString(car_name));
+					cc.setDeliveredDate(rs.getDate(delivered_date));
+					cc.setBuyerName(rs.getString(buyer_name));
 					ts.add(cc);
 				}
 				System.out.println(sql);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) {
+			log.error(e);
+			}
 
 		return ts;
 	}
 
 	/*
-	 * public void updateCarStatus(int carId) throws Exception { // TODO
+	 * public void updateCarStatus(int carId) throws DbException { // TODO
 	 * Auto-generated method stub CarDetail c=new CarDetail(); Connection
 	 * con=ConnectionUtil.getConnection(); String
 	 * sql="update car_detail  set status='not available' where car_id=(select car_id from car_order where car_order.car_id=cardetail.?"

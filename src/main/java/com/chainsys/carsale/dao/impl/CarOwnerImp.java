@@ -3,38 +3,64 @@ package com.chainsys.carsale.dao.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.chainsys.carsale.dao.CarOwnerDAO;
+import com.chainsys.carsale.logger.Logger;
 import com.chainsys.carsale.model.CarDetail;
 import com.chainsys.carsale.model.CarOrder;
 import com.chainsys.carsale.model.CarOwner;
 import com.chainsys.carsale.util.ConnectionUtil;
+import com.chainsys.carsale.util.DbException;
 
 public class CarOwnerImp implements CarOwnerDAO {
+	private static final Logger log = Logger.getInstance();
+	private static final String seller_id = "seller_id";
+	private static final String address1 = "address1";
+	private static final String car_name = "car_name";
+	private static final String car_id = "car_id";
+	private static final String car_brand = "car_brand";
+	private static final String address2 = "address2";
+	private static final String pincode = "pincode";
+	private static final String registration_no = "registration_no";
+	private static final String seller_name = "seller_name";
+	private static final String reg_year = "reg_year";
+	private static final String buyer_contact_number = "buyer_contact_number";
+	private static final String price = "price";
+	private static final String status = "status";
+	private static final String driven_km = "driven_km";
+	private static final String car_available_city = "car_available_city";
+	private static final String vehicle_identification_no = "vehicle_identification_no";
+	private static final String test_drive = "test_drive";
+	private static final String delivered_date = "delivered_date";
+	private static final String ordered_date = "ordered_date";
+	private static final String order_id = "order_id";
+	private static final String buyer_name = "buyer_name";
+	private static final String buyer_state = "buyer_state";
 
-	public boolean isCarOwnerAlreadyRegistered(Long mobileNo) throws Exception {
+	public boolean isCarOwnerAlreadyRegistered(Long mobileNo) throws DbException {
 		boolean exists = false;
 		// Connection con=null;
 		String sqll = "select * from car_seller where seller_contact_no=?";
 
 		// Statement st=null;
-		try (Connection con = ConnectionUtil.getConnection();PreparedStatement ps = con.prepareStatement(sqll);) {
-			
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sqll);) {
+
 			ps.setLong(1, mobileNo);
 			try (ResultSet rs = ps.executeQuery();) {
 				if (rs.next()) {
 					exists = true;
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
 		}
 		return exists;
 	}
 
-	public void AddCarOwner(CarOwner carOwner) throws Exception {
+	public void AddCarOwner(CarOwner carOwner) throws DbException {
 		// Connection con=null;
 		// PreparedStatement pst=null;
 		String sql = "insert into car_seller(seller_id,seller_name,seller_contact_no,user_password,address1,address2,city,seller_state,pincode)values(seller_id_sq.nextval,?,?,?,?,?,?,?,?)";
@@ -53,13 +79,13 @@ public class CarOwnerImp implements CarOwnerDAO {
 			int row = pst.executeUpdate();
 			System.out.println(row);
 			System.out.println(sql);
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
 		}
 
 	}
 
-	public void deleteCarDetail(int carOwnerId, int carId) throws Exception {
+	public void deleteCarDetail(int carOwnerId, int carId) throws DbException {
 		// TODO Auto-generated method stub
 		// Connection con=null;
 		// PreparedStatement ps=null;
@@ -80,12 +106,12 @@ public class CarOwnerImp implements CarOwnerDAO {
 					}
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
 		}
 	}
 
-	public List<CarOwner> ViewYourCar(long mobileNo) throws Exception {
+	public List<CarOwner> ViewYourCar(long mobileNo) throws DbException {
 		List<CarOwner> al = new ArrayList<CarOwner>();
 		// Connection con=null;
 		// PreparedStatement ps=null;
@@ -93,52 +119,53 @@ public class CarOwnerImp implements CarOwnerDAO {
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);)
 
 		{
-			// String sql="select seller_id from car_seller where
-			// seller_contact_no="+mobileno+"";
-			// Statement st=con.createStatement();
-
-			ps.setLong(1, mobileNo);
+			/*
+			 * String sql="select seller_id from car_seller where
+			 * seller_contact_no="+mobileno+""; Statement st=con.createStatement();
+			 */
+			ps.setLong(1,mobileNo);
 
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarOwner c = new CarOwner();
 					CarDetail cd = new CarDetail();
-					c.setownerName(rs.getString("seller_name"));
-					c.setownerId(rs.getInt("seller_id"));
-					cd.setCarAvailableCity(rs.getString("car_available_city"));
-					cd.setCarBrand(rs.getString("car_brand"));
-					cd.setCarName(rs.getString("car_name"));
-					cd.setDrivenKm(rs.getInt("Driven_km"));
-					cd.setPrice(rs.getInt("price"));
-					cd.setRegistrationNo(rs.getString("registration_no"));
-					cd.setRegYear(rs.getInt("reg_year"));
-					cd.setVehicleIdNo(rs.getString("vehicle_identification_no"));
+					c.setownerName(rs.getString(seller_name));
+					c.setownerId(rs.getInt(seller_id));
+					cd.setCarAvailableCity(rs.getString(car_available_city));
+					cd.setCarBrand(rs.getString(car_brand));
+					cd.setCarName(rs.getString(car_name));
+					cd.setDrivenKm(rs.getInt(driven_km));
+					cd.setPrice(rs.getInt(price));
+					cd.setRegistrationNo(rs.getString(registration_no));
+					cd.setRegYear(rs.getInt(reg_year));
+					cd.setVehicleIdNo(rs.getString(vehicle_identification_no));
 					c.setCarDetail(cd);
 					al.add(c);
 				}
 
-			} catch (Exception e) {
-				e.printStackTrace();
+			} 
+		}catch (SQLException e) {
+				log.error(e);
+				throw new DbException("unable to view Car");
 			}
 
-		}
+		
 		return al;
 	}
 
-	public void updateCarPrice(CarOwner carOwner) throws Exception {
+	public void updateCarPrice(CarOwner carOwner) throws DbException {
 
-		// Connection con = null;
-		// Statement st = null;
-		// PreparedStatement ps = null;
 		String sql = null;
 		CarDetail cardetail = carOwner.getCarDetail();
 		try (Connection con = ConnectionUtil.getConnection();) {
 
 			if (carOwner.getownerId() != 0) {
-				// sql = "update car_detail cd set cd.price="+cardetail.getPrice()+"where car_id
-				// = "+cardetail.getCarId()+" and ( car_seller_id = "+carOwner.getownerId()+" or
-				// car_seller_id in ( select seller_id from car_seller where seller_contact_no
-				// ="+carOwner.getcontactNo()+"";
+				/*
+				 * sql = "update car_detail cd set cd.price="+cardetail.getPrice()+"where car_id
+				 * = "+cardetail.getCarId()+" and ( car_seller_id = "+carOwner.getownerId()+" or
+				 * car_seller_id in ( select seller_id from car_seller where seller_contact_no
+				 * ="+carOwner.getcontactNo()+"";
+				 */
 				sql = "update car_detail cd set cd.price=? where car_id =? and car_seller_id=?";
 				try (PreparedStatement ps = con.prepareStatement(sql);) {
 					ps.setFloat(1, cardetail.getPrice());
@@ -159,49 +186,46 @@ public class CarOwnerImp implements CarOwnerDAO {
 			} else {
 				System.out.println("Failed to Upadate");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
+			throw new DbException("unable to retrive");
 		}
 
 	}
 
-	public List<CarOrder> ViewYourPlacedCar(Long mobileNo) throws Exception {
-		//Connection con = null;
-		//PreparedStatement ps = null;
+	public List<CarOrder> ViewYourPlacedCar(Long mobileNo) throws DbException {
+		// Connection con = null;
+		// PreparedStatement ps = null;
 		List<CarOrder> ar = new ArrayList<CarOrder>();
 		String sql = "select * from car_order where seller_id=(select seller_id from car_seller where seller_contact_no=?)";
 
-		try (Connection con = ConnectionUtil.getConnection();PreparedStatement ps = con.prepareStatement(sql);)
-		{
-			
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+
 			ps.setLong(1, mobileNo);
-			try(ResultSet rs = ps.executeQuery();)
-			{
-			if (rs.next()) {
-				CarOrder co = new CarOrder();
-				co.setBuyerContactNo(rs.getLong("buyer_contact_number"));
-				co.setBuyerName(rs.getString("buyer_name"));
-				co.setCarId(rs.getInt("car_id"));
-				co.setOrderId(rs.getInt("order_id"));
-				co.setTestDrive(rs.getString("test_drive"));
-				co.setDeliveredDate(rs.getDate("delivered_date"));
-				co.setOrderedDate(rs.getDate("ordered_date"));
-				co.setAddress1(rs.getString("address1"));
-				co.setAddress2(rs.getString("address2"));
-				co.setBuyerState(rs.getString("buyer_state"));
-				co.setStatus(rs.getString("status"));
-				co.setPincode(rs.getInt("pincode"));
-				ar.add(co);
-			} else {
-				System.out.println("your car not ordered");
+			try (ResultSet rs = ps.executeQuery();) {
+				if (rs.next()) {
+					CarOrder co = new CarOrder();
+					co.setBuyerContactNo(rs.getLong(buyer_contact_number));
+					co.setBuyerName(rs.getString(buyer_name));
+					co.setCarId(rs.getInt(car_id));
+					co.setOrderId(rs.getInt(order_id));
+					co.setTestDrive(rs.getString(test_drive));
+					co.setDeliveredDate(rs.getDate(delivered_date));
+					co.setOrderedDate(rs.getDate(ordered_date));
+					co.setAddress1(rs.getString(address1));
+					co.setAddress2(rs.getString(address2));
+					co.setBuyerState(rs.getString(buyer_state));
+					co.setStatus(rs.getString(status));
+					co.setPincode(rs.getInt(pincode));
+					ar.add(co);
+				} else {
+					log.error("your car not ordered");
+				}
 			}
-			}
-		} catch (Exception e) 
-		{
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
 		}
-	
+
 		return ar;
 	}
 }
-

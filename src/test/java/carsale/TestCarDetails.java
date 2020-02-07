@@ -5,9 +5,12 @@ import java.util.Scanner;
 
 import com.chainsys.carsale.dao.impl.CarDetailImp;
 import com.chainsys.carsale.dao.impl.CarOwnerImp;
+import com.chainsys.carsale.logger.Logger;
 import com.chainsys.carsale.model.CarDetail;
 import com.chainsys.carsale.model.CarOwner;
 public class TestCarDetails {
+	private static final Logger log=Logger.getInstance();
+
 	public static void main(String[] args) throws Exception
 	{
 		CarDetailImp co=new CarDetailImp();
@@ -17,16 +20,16 @@ public class TestCarDetails {
 	    char m;
 		do
 		{
-		System.out.println("1.Add(sell) Your car");
-		System.out.println("2.view all (not)available car");
-		System.out.println("3.get specific car information");
-		System.out.println("4.List out all available cars in specifc state");
-		System.out.println("5.list out specific car detail with seller");
-		System.out.println("6.search by car price(above) and brand");
-        System.out.println("7.serach by car price(below) and Car Brand");
-        System.out.println("8.search by car Driven Kilometer");
-        System.out.println("9. search By Fuel Type");
-        System.out.println("10.Exit");
+		log.getInput("1.Add(sell) Your car");
+		log.getInput("2.view all (not)available car");
+		log.getInput("3.get specific car information");
+		log.getInput("4.List out all available cars in specifc state");
+		log.getInput("5.list out specific car detail with seller");
+		log.getInput("6.search by car price(above) and brand");
+		log.getInput("7.serach by car price(below) and Car Brand");
+		log.getInput("8.search by car Driven Kilometer");
+		log.getInput("9. search By Fuel Type");
+		log.getInput("10.Exit");
 		int cho=sc.nextInt();
 		switch(cho)
 		{
@@ -36,9 +39,9 @@ public class TestCarDetails {
 			char mesg;
 			do {
 				
-				System.out.println("1.new User");
-				System.out.println("2.Existing User");
-				System.out.println("3.Exit");
+				log.getInput("1.new User");
+				log.getInput("2.Existing User");
+				log.getInput("3.Exit");
 			    int ch=sc.nextInt();
 			    switch(ch)
 			    {
@@ -46,25 +49,25 @@ public class TestCarDetails {
 			    {
 			    					
 			        CarOwner coo=new CarOwner();
-			       	System.out.println("Enter the contact no");
+			        log.getInput("Enter the contact no");
 					long mobileno=sc.nextLong();
 					CarOwnerImp coi=new CarOwnerImp();
 					boolean exists = coi.isCarOwnerAlreadyRegistered(mobileno);
 					if(exists==false)
 					{
-				    System.out.println("Enter the seller name");
+						log.getInput("Enter the seller name");
 					coo.setownerName(sc.next());
-					System.out.println("Enter the password");
+					log.getInput("Enter the password");
 					coo.setPassword(sc.next());
-					System.out.println("Enter the Street name");
+					log.getInput("Enter the Street name");
 					coo.setAddress1(sc.next());
-					System.out.println("Enter the street No and door no");
+					log.getInput("Enter the street No and door no");
 					coo.setAddress2(sc.next());
-					System.out.println("Enter the city");
+					log.getInput("Enter the city");
 					coo.setCity(sc.next());
-					System.out.println("Enter the state");
+					log.getInput("Enter the state");
 					coo.setState(sc.next());
-					System.out.println("Enter pincode");
+					log.getInput("Enter pincode");
 					coo.setPincode(sc.nextInt());
 					coo.setContactNo(mobileno);
 					CarOwnerImp coii=new CarOwnerImp();
@@ -72,7 +75,7 @@ public class TestCarDetails {
 					}
 					else
 					{
-						System.out.println("user already Exists");
+						log.getInput("user already Exists");
 					}
 			    	break;
 			    }
@@ -81,46 +84,46 @@ public class TestCarDetails {
 			char msg;
 			do
 			{
-	        System.out.println("choose your Login option");
-	        System.out.println("press 1 for Seller id or 2 for mobile no");
+	        log.getInput("choose your Login option");
+	        log.getInput("press 1 for Seller id or 2 for mobile no");
 	        int choice=sc.nextInt();
 	        switch(choice)
 	        {
 	        case 1:
 	        {
-	     	           	System.out.println("Enter the  seller ID");
+	     	           	log.getInput("Enter the  seller ID");
 	     	int sellerId=sc.nextInt();
-	        	System.out.println("Enter your password");
+	        	log.getInput("Enter your password");
 			String pass=sc.next();
 			CarDetailImp ci=new CarDetailImp();
 			int sellerIdd=ci.verifyUser(sellerId, pass);
 			if(sellerIdd!=0)
 			{
-			System.out.println("Enter car name");
+			log.getInput("Enter car name");
 			String carName=sc.next();
-			System.out.println("Enter car Brand");
+			log.getInput("Enter car Brand");
 			String carBrand=sc.next();
-			System.out.println("Enter DrivenKm");
+			log.getInput("Enter DrivenKm");
 			int drivenKm=sc.nextInt();
-			System.out.println("Enter transmission type");
+			log.getInput("Enter transmission type");
 			String trType=sc.next();
-			System.out.println("car Price");
+			log.getInput("car Price");
 			int price=sc.nextInt();
-			System.out.println("Enter the state");
+			log.getInput("Enter the state");
 			String regState=sc.next();
-			System.out.println("Enter the fuel Type");
+			log.getInput("Enter the fuel Type");
 			String fuelType=sc.next();
-			//System.out.println("Enter the status ");
+			//log.getInput("Enter the status ");
 			//String status=s.next();
-			System.out.println("Enter the register year");
+			log.getInput("Enter the register year");
 			int regYear=sc.nextInt();
-			System.out.println("enter the car available city");
+			log.getInput("enter the car available city");
 			String carAvailabeCity=sc.next();
-			System.out.println("Enter the Registration No");
+			log.getInput("Enter the Registration No");
             String registrationNo=sc.next();
-            System.out.println("Enter the  vehicle identifcation no");
+            log.getInput("Enter the  vehicle identifcation no");
             String vehicleNo=sc.next();
-            System.out.println(" are you  owner(press 1) or intermediatary(press 0)");
+            log.getInput(" are you  owner(press 1) or intermediatary(press 0)");
             int isOwner=sc.nextInt();
 			LocalDate updatedDate=LocalDate.now();
 			
@@ -149,48 +152,48 @@ public class TestCarDetails {
 			}
 			else
 			{
-				System.out.println("invalid userId and password");
+				log.error("invalid userId and password");
 			}
 			break;
 	        }
 	        case 2:
 	        {
 	        	CarOwner car=new CarOwner();
-	           	System.out.println("Enter the  Mobile Number");
+	           	log.getInput("Enter the  Mobile Number");
 	     	  Long mobileNo=sc.nextLong();
 	           	car.setContactNo(mobileNo);
-	        	System.out.println("Enter your password");
+	        	log.getInput("Enter your password");
 			  String password=sc.next();
 	        	car.setPassword(password);
 			CarDetailImp ci=new CarDetailImp();
 			int sellerId=ci.getSellerId(mobileNo,password);
 			if(sellerId!=0)
 			{
-			System.out.println("Enter car name");
+			log.getInput("Enter car name");
 			String carName=sc.next();
-			System.out.println("Enter car Brand");
+			log.getInput("Enter car Brand");
 			String carBrand=sc.next();
-			System.out.println("Enter DrivenKm");
+			log.getInput("Enter DrivenKm");
 			int drivenKm=sc.nextInt();
-			System.out.println("Enter transmission type");
+			log.getInput("Enter transmission type");
 			String trType=sc.next();
-			System.out.println("car Price");
+			log.getInput("car Price");
 			int price=sc.nextInt();
-			System.out.println("Enter the state");
+			log.getInput("Enter the state");
 			String regState=sc.next();
-			System.out.println("Enter the fuel Type");
+			log.getInput("Enter the fuel Type");
 			String fuelType=sc.next();
-			//System.out.println("Enter the status ");
+			//log.getInput("Enter the status ");
 			//String status=s.next();
-			System.out.println("Enter the register year");
+			log.getInput("Enter the register year");
 			int regYear=sc.nextInt();
-			System.out.println("enter the car available city");
+			log.getInput("enter the car available city");
 			String carAvailabeCity=sc.next();
-			System.out.println("Enter the Registration No");
+			log.getInput("Enter the Registration No");
             String registrationNo=sc.next();
-            System.out.println("Enter the  vehicle identifcation no");
+            log.getInput("Enter the  vehicle identifcation no");
             String vehicleNo=sc.next();
-            System.out.println( "are you  owner(press 1) or intermediatary(press 0)");
+            log.getInput( "are you  owner(press 1) or intermediatary(press 0)");
             int isOwner=sc.nextInt();
 			LocalDate updatedDate=LocalDate.now();
 			
@@ -216,12 +219,12 @@ public class TestCarDetails {
 			}
 			else
 			{
-				System.out.println("invalid mobileno or password");
+				log.error("invalid mobileno or password");
 			}
 		   break;
 	        }
 	        }
-	        System.out.println("Do you want to continue");
+	        log.getInput("Do you want to continue");
 	        msg=sc.next().charAt(0);
 	       	} while(msg=='y'||msg=='y');    
 	        break;
@@ -231,9 +234,9 @@ public class TestCarDetails {
 			System.exit(0);
 		}
 		default:
-			System.out.println("Enter the valid option");
+			log.error("Enter the valid option");
 		}
-			    System.out.println("Do You want to continue y/n");
+			    log.getInput("Do You want to continue y/n");
 			    mesg=sc.next().charAt(0);	   
 			    }while(mesg=='y' || mesg=='Y');
 				
@@ -246,83 +249,83 @@ public class TestCarDetails {
 		{
 			CarDetailImp cdi=new CarDetailImp();
 			
-			System.out.println("Enter the car status 1. Available 2. Not Available");
+			log.getInput("Enter the car status 1. Available 2. Not Available");
 			int choice=sc.nextInt();
 			String status = choice ==1 ? "available" : "not available" ; 
 			List<CarDetail> al=cdi.getUpdatedCar(status);
 			for(CarDetail ss:al)
 			{
-				//System.out.println(ss.toString());
-				System.out.println(ss.getCarOwner().getownerName()+"  "+ss.getCarOwner().getContactNo()+"  "+ss.getCarBrand()+"   "+ss.getCarName()+"  "+ss.getCarId()+"   "+ss.getDrivenKm()+"   "+ss.getFuelType()+"   "+ss.getRegState()+""+ss.getRegYear()+"  "+ss.getTrType()+"  "+ss.getStatus()+"  "+ss.getRegistrationNo());
+				//log.getInput(ss.toString());
+				log.info(ss.getCarOwner().getownerName()+"  "+ss.getCarOwner().getContactNo()+"  "+ss.getCarBrand()+"   "+ss.getCarName()+"  "+ss.getCarId()+"   "+ss.getDrivenKm()+"   "+ss.getFuelType()+"   "+ss.getRegState()+""+ss.getRegYear()+"  "+ss.getTrType()+"  "+ss.getStatus()+"  "+ss.getRegistrationNo());
 			}
 		break;
 		}
 		case 3:
 		{
-			System.out.println(" enter preffered Car Brand");
+			log.getInput(" enter preffered Car Brand");
 			cd.setCarBrand(sc.next());
 			List<CarDetail>al=co.getCarDetail(cd.getCarBrand());
 			for(CarDetail cdl:al)
 			{
-			System.out.println(cdl.getCarName()+"   "+cdl.getCarBrand()+"   "+cdl.getTrType()+"    "+cdl.getFuelType()+"   "+cdl.getRegState()+"   "+cdl.getRegYear()+"   "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"    "+cdl.getStatus()+"   "+cdl.getRegistrationNo()+"    a"+cdl.getCarOwner().getownerName());
+			log.info(cdl.getCarName()+"   "+cdl.getCarBrand()+"   "+cdl.getTrType()+"    "+cdl.getFuelType()+"   "+cdl.getRegState()+"   "+cdl.getRegYear()+"   "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"    "+cdl.getStatus()+"   "+cdl.getRegistrationNo()+"    a"+cdl.getCarOwner().getownerName());
 			}	
 		break;
 		}
 		case 4:
 		{
-			System.out.println("Enter the car brand");
+			log.getInput("Enter the car brand");
 		    cd.setCarBrand(sc.next());
-		    System.out.println("Enter the state");
+		    log.getInput("Enter the state");
 		    cd.setRegState(sc.next());
 		    List<CarDetail> al=co.getCarDetail(cd.getCarBrand(),cd.getRegState());
 			for(CarDetail cdl:al)
 			{
-				//System.out.println(cdl.toString());
-				System.out.println(cdl.getCarName()+"    "+cdl.getCarBrand()+"    "+cdl.getTrType()+"  "+cdl.getFuelType()+"   "+cdl.getRegState()+"    "+cdl.getRegYear()+"  "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"  "+cdl.getStatus()+"   "+cdl.getRegistrationNo());
+				//log.getInput(cdl.toString());
+				log.info(cdl.getCarName()+"    "+cdl.getCarBrand()+"    "+cdl.getTrType()+"  "+cdl.getFuelType()+"   "+cdl.getRegState()+"    "+cdl.getRegYear()+"  "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"  "+cdl.getStatus()+"   "+cdl.getRegistrationNo());
 				
 			}
 			break;
 		}
 		case 5:
 		{
-			System.out.println("Enter the car brand");
+			log.getInput("Enter the car brand");
 			cd.setCarBrand(sc.next());
 		List<CarDetail> carList = co.getDetailWithOwner(cd.getCarBrand());
 		for (CarDetail carDetail : carList) {
 			
-	       System.out.println(carDetail);
+	       log.info(carDetail);
 		}
 		break;
 		}
 		case 6:
 		{
-			System.out.println("Enter the minium car price");
+			log.getInput("Enter the minium car price");
 			float minPrice=sc.nextFloat();
-			System.out.println("Enter the car Brand");
+			log.getInput("Enter the car Brand");
 			String carBrand=sc.next();
 			List<CarDetail> ar=co.getCarDetailAbovePrice(minPrice,carBrand);
 			for(CarDetail cdr:ar)
 			{
-				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"  "+cdr.getStatus()+"   "+cdr.getRegistrationNo());
+				log.info(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"  "+cdr.getStatus()+"   "+cdr.getRegistrationNo());
 				
 				}
 			if(ar.isEmpty())
 			{
-				System.out.println("oops!!! car not found");
+				log.getInput("oops!!! car not found");
 			}
 			break;
 			
 		}
 		case 7:
 		{
-			System.out.println("Enter the maximum car price");
+			log.getInput("Enter the maximum car price");
 			float maxPrice=sc.nextFloat();
-			System.out.println("Enter the car Brand");
+			log.getInput("Enter the car Brand");
 			String carBrand=sc.next();
 			List<CarDetail> ar=co.getCarDetailBelowPrice(maxPrice,carBrand);
 			for(CarDetail cdr:ar)
 			{
-				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
+				log.info(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
 				
 				}
 			break;
@@ -330,41 +333,41 @@ public class TestCarDetails {
 		}
 		case 8:
 		{
-			System.out.println(" Kilometer start FROM:");
+			log.getInput(" Kilometer start FROM:");
 			float start=sc.nextFloat();
-			System.out.println("Kilometer End TO:");
+			log.getInput("Kilometer End TO:");
 			float end=sc.nextFloat();
 			List<CarDetail> ar=co.getCarDetailAboveDrivenKm(start,end);
 			for(CarDetail cdr:ar)
 			{
-				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
+				log.info(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
 				
 				}
 			if(ar.isEmpty())
 			{
-				System.out.println(" oops!!! car not found");
+				log.getInput(" oops!!! car not found");
 			}
 			break;
 			
 		}
 		case 9:
 		{
-			System.out.println("Enter  FuelType:");
+			log.getInput("Enter  FuelType:");
 			String fuelType=sc.next();
 			List<CarDetail> ar=co.getCarDetailUseFuelType(fuelType);
 			for(CarDetail cdr:ar)
 			{
-				System.out.println(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
+				log.info(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
 				
 			}
 			break;
 		}
 		
 		default:
-			System.out.println("Enter valid option");
+			log.error("Enter valid option");
 			break;
 		}
-	System.out.println("Do You want to continue y/n");
+	log.getInput("Do You want to continue y/n");
      m=sc.next().charAt(0);
         }while(m=='y'||m=='Y');
 		sc.close();

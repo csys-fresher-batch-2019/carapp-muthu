@@ -4,18 +4,38 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.chainsys.carsale.dao.CarDetailDAO;
+import com.chainsys.carsale.logger.Logger;
 import com.chainsys.carsale.model.CarDetail;
 import com.chainsys.carsale.model.CarOwner;
 import com.chainsys.carsale.util.ConnectionUtil;
+import com.chainsys.carsale.util.DbException;
 
 
 public class CarDetailImp implements CarDetailDAO {
+	private static final Logger log=Logger.getInstance();
+	private static final String seller_id = "seller_id";
+	private static final String seller_contact_no = "seller_contact_no";
+	private static final String car_name = "car_name";
+	private static final String car_id = "car_id";
+	private static final String car_brand = "car_brand";
+	private static final String tr_type= "tr_type";
+	private static final String fuel_type= "fuel_type";
+	private static final String registration_no = "registration_no";
+	private static final String seller_name = "seller_name";
+	private static final String reg_year= "reg_year";
+	private static final String reg_state = "reg_state";
+	private static final String price = "price";
+	private static final String status= "status";
+	private static final String driven_km= "driven_km";
+	private static final String car_available_city= "car_available_city";
+	private static final String vehicle_identification_no= "vehicle_identification_no";
 
-	public int getSellerId(Long mobileNo, String password) throws Exception {
+	public int getSellerId(Long mobileNo, String password) throws DbException {
 
 		int sellerId = 0;
 		String sql = "select seller_id from car_seller where seller_contact_no=?  and user_password=?";
@@ -25,17 +45,17 @@ public class CarDetailImp implements CarDetailDAO {
 			try (ResultSet rs = ps.executeQuery();) {
 
 				if (rs.next()) {
-					sellerId = rs.getInt("seller_id");
+					sellerId = rs.getInt(seller_id);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
 		}
 		return sellerId;
 
 	}
 
-	public int verifyUser(int sellerIdd, String password) throws Exception {
+	public int verifyUser(int sellerIdd, String password) throws DbException {
 		int sellerId = 0;
 		String sql = "select seller_id from car_seller where seller_id=?  and user_password=?";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
@@ -44,32 +64,37 @@ public class CarDetailImp implements CarDetailDAO {
 
 			try (ResultSet rs = pst.executeQuery();) {
 				if (rs.next()) {
-					sellerId = rs.getInt("seller_id");
+					sellerId = rs.getInt(seller_id);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
+			throw new DbException("invalid User");
 		}
 
 		return sellerId;
 
 	}
 
-	public void addCarDetail(CarDetail cardetail) throws Exception {
-		PreparedStatement pst =null;
-		String query = "select seller_id,seller_contact_no,user_password from car_seller where user_password= '"
-				+ cardetail.getCarOwner().getPassword() + "'";
-		try (Connection con = ConnectionUtil.getConnection();) {
-			if (cardetail.getCarOwnerId() != 0) {
-				query = query + " and seller_id=?";
-				pst = con.prepareStatement(query);
-				pst.setInt(1, cardetail.getCarOwnerId());
+	public void addCarDetail(CarDetail cardetail) throws DbException{
+		
+		String query = "select seller_id,seller_contact_no,user_password from car_seller where user_password= ? ";
+		if (cardetail.getCarOwnerId() != 0) {
+			query = query + " and seller_id=?";
+		}
+		else if (cardetail.getCarOwner().getContactNo() != 0) {
+			query = query + " and  seller_contact_no=?";
+		}
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(query);) {
+			pst.setString(1, cardetail.getCarOwner().getPassword());
+			if (cardetail.getCarOwnerId() != 0) {			
+				
+				pst.setInt(2, cardetail.getCarOwnerId());
 
 			} else if (cardetail.getCarOwner().getContactNo() != 0) {
-				query = query + " and  seller_contact_no=?";
-				 pst = con.prepareStatement(query);
+				
 
-				pst.setLong(1, cardetail.getContactNo());
+				pst.setLong(2, cardetail.getContactNo());
 			}
 			System.out.println(query);
 			try (ResultSet rs = pst.executeQuery();) {
@@ -97,24 +122,20 @@ public class CarDetailImp implements CarDetailDAO {
 						System.out.println(rows);
 					}
 				} else {
-					System.out.println("Invalid Data");
+					log.error("Invalid Data");
 				}
 
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
+			throw new DbException("unable to add car");
 		}
-		finally
-		{
-			if(pst!=null){
-				pst.close();
-			}
-		}
+		
 	}
 
 	// s.close();
 
-	public List<CarDetail> getCarDetail(String carName) throws Exception {
+	public List<CarDetail> getCarDetail(String carName) throws DbException {
 
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=?";
@@ -124,30 +145,31 @@ public class CarDetailImp implements CarDetailDAO {
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail c = new CarDetail();
-					c.setCarName(rs.getString("car_name"));
-					c.setCarBrand(rs.getString("car_brand"));
-					c.setTrType(rs.getString("tr_type"));
-					c.setFuelType(rs.getString("fuel_type"));
-					c.setRegState(rs.getString("reg_state"));
-					c.setRegYear(rs.getInt("reg_year"));
-					c.setDrivenKm(rs.getInt("driven_km"));
-					c.setPrice(rs.getInt("price"));
-					c.setStatus(rs.getString("status"));
-					c.setRegistrationNo(rs.getString("registration_no"));
+					c.setCarName(rs.getString(car_name));
+					c.setCarBrand(rs.getString(car_brand));
+					c.setTrType(rs.getString(tr_type));
+					c.setFuelType(rs.getString(fuel_type));
+					c.setRegState(rs.getString(reg_state));
+					c.setRegYear(rs.getInt(reg_year));
+					c.setDrivenKm(rs.getInt(driven_km));
+					c.setPrice(rs.getInt(price));
+					c.setStatus(rs.getString(status));
+					c.setRegistrationNo(rs.getString(registration_no));
 					CarOwner carowner = new CarOwner();
-					carowner.setownerName(rs.getString("seller_name"));
+					carowner.setownerName(rs.getString(seller_name));
 					c.setCarOwner(carowner);
 					ar.add(c);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+		log.error(e);
+		throw new DbException("unable to retrive the car information!!");
 		}
 
 		return ar;
 	}
 
-	public List<CarDetail> getCarDetail(String carBrand, String regState) throws Exception {
+	public List<CarDetail> getCarDetail(String carBrand, String regState) throws DbException {
 		// TODO Auto-generated method stub
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 
@@ -160,28 +182,29 @@ public class CarDetailImp implements CarDetailDAO {
 			try (ResultSet rss = ps.executeQuery();) {
 				while (rss.next()) {
 					CarDetail c = new CarDetail();
-					c.setCarName(rss.getString("car_name"));
-					c.setCarBrand(rss.getString("car_brand"));
-					c.setTrType(rss.getString("tr_type"));
-					c.setFuelType(rss.getString("fuel_type"));
-					c.setRegState(rss.getString("reg_state"));
-					c.setRegYear(rss.getInt("reg_year"));
-					c.setDrivenKm(rss.getInt("driven_km"));
-					c.setRegistrationNo(rss.getString("registration_no"));
-					c.setPrice(rss.getInt("price"));
-					c.setStatus(rss.getString("status"));
+					c.setCarName(rss.getString(car_name));
+					c.setCarBrand(rss.getString(car_brand));
+					c.setTrType(rss.getString(tr_type));
+					c.setFuelType(rss.getString(fuel_type));
+					c.setRegState(rss.getString(reg_state));
+					c.setRegYear(rss.getInt(reg_year));
+					c.setDrivenKm(rss.getInt(driven_km));
+					c.setRegistrationNo(rss.getString(registration_no));
+					c.setPrice(rss.getInt(price));
+					c.setStatus(rss.getString(status));
 
 					ar.add(c);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+		 log.error(e);
+		 throw new DbException("unable to retrive car Details");
 		}
 		return ar;
 
 	}
 
-	public List<CarDetail> getDetailWithOwner(String carBrand) throws Exception {
+	public List<CarDetail> getDetailWithOwner(String carBrand) throws DbException {
 
 		List<CarDetail> list = new ArrayList<CarDetail>();
 		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=?";
@@ -196,26 +219,26 @@ public class CarDetailImp implements CarDetailDAO {
 					
 					// 1 row info -> storing in 1 object
 					CarDetail cd = new CarDetail();
-					cd.setCarId(rss.getInt("car_id"));
-					cd.setCarName(rss.getString("car_name"));
-					cd.setCarBrand(rss.getString("car_brand"));
+					cd.setCarId(rss.getInt(car_id));
+					cd.setCarName(rss.getString(car_name));
+					cd.setCarBrand(rss.getString(car_brand));
 					// cd.setCarOwnerId(rss.getInt("car_seller_id"));
-					cd.setDrivenKm(rss.getInt("driven_km"));
-					cd.setFuelType(rss.getString("fuel_type"));
-					cd.setRegState(rss.getString("reg_state"));
-					cd.setStatus(rss.getString("status"));
-					cd.setRegYear(rss.getInt("reg_year"));
-					cd.setTrType(rss.getString("tr_type"));
-					cd.setCarAvailableCity(rss.getString("car_available_city"));
-					cd.setRegistrationNo(rss.getString("registration_no"));
-					cd.setVehicleIdNo(rss.getString("vehicle_identification_no"));
-					cd.setPrice(rss.getInt("price"));
+					cd.setDrivenKm(rss.getInt(driven_km));
+					cd.setFuelType(rss.getString(fuel_type));
+					cd.setRegState(rss.getString(reg_state));
+					cd.setStatus(rss.getString(status));
+					cd.setRegYear(rss.getInt(reg_year));
+					cd.setTrType(rss.getString(tr_type));
+					cd.setCarAvailableCity(rss.getString(car_available_city));
+					cd.setRegistrationNo(rss.getString(registration_no));
+					cd.setVehicleIdNo(rss.getString(vehicle_identification_no));
+					cd.setPrice(rss.getInt(price));
 
 					CarOwner carowner = new CarOwner();
-					carowner.setownerName(rss.getString("seller_name"));
-					carowner.setownerId(rss.getInt("seller_id"));// instread of carowner.ownerid =
+					carowner.setownerName(rss.getString(seller_name));
+					carowner.setownerId(rss.getInt(seller_id));// instread of carowner.ownerid =
 																	
-					carowner.setContactNo(rss.getLong("seller_contact_no"));
+					carowner.setContactNo(rss.getLong(seller_contact_no));
 
 					cd.setCarOwner(carowner);
 
@@ -223,14 +246,15 @@ public class CarDetailImp implements CarDetailDAO {
 					list.add(cd);
 					}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
+			throw new DbException("unable to retrive");
 		}
 
 		return list;
 	}
 
-	public List<CarDetail> getUpdatedCar(String status) throws Exception {
+	public List<CarDetail> getUpdatedCar(String status) throws DbException {
 		
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 
@@ -244,48 +268,48 @@ public class CarDetailImp implements CarDetailDAO {
 				while (rs.next()) {
 					CarDetail c = new CarDetail();
 					CarOwner co = new CarOwner();
-					c.setCarBrand(rs.getString("car_brand"));
-					c.setCarName(rs.getString("car_name"));
-					c.setTrType(rs.getString("tr_type"));
-					c.setDrivenKm(rs.getInt("driven_km"));
-					c.setFuelType(rs.getString("fuel_type"));
-					c.setRegState(rs.getString("reg_state"));
-					c.setRegYear(rs.getInt("reg_year"));
-					c.setPrice(rs.getInt("price"));
-					c.setStatus(rs.getString("status"));
-					c.setCarAvailableCity(rs.getString("car_available_city"));
-					c.setRegistrationNo(rs.getString("registration_no"));
-					co.setownerName(rs.getString("seller_name"));
-					co.setContactNo(rs.getLong("seller_contact_no"));
-					co.setownerId(rs.getInt("seller_id"));
+					c.setCarBrand(rs.getString(car_brand));
+					c.setCarName(rs.getString(car_name));
+					c.setTrType(rs.getString(tr_type));
+					c.setDrivenKm(rs.getInt(driven_km));
+					c.setFuelType(rs.getString(fuel_type));
+					c.setRegState(rs.getString(reg_state));
+					c.setRegYear(rs.getInt(reg_year));
+					c.setPrice(rs.getInt(price));
+					c.setStatus(rs.getString(status));
+					c.setCarAvailableCity(rs.getString(car_available_city));
+					c.setRegistrationNo(rs.getString(registration_no));
+					co.setownerName(rs.getString(seller_name));
+					co.setContactNo(rs.getLong(seller_contact_no));
+					co.setownerId(rs.getInt(seller_id));
 					c.setCarOwner(co);
 					ar.add(c);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
 		}
 
 		return ar;
 	}
 
-	public List<CarDetail> getCarDetail(String carName, String carBrand, String fuleType) throws Exception {
+	public List<CarDetail> getCarDetail(String carName, String carBrand, String fuleType) throws DbException {
 		
 		return null;
 	}
 
 	@Override
-	public List<CarDetail> getCarDetail(Float max, String carBrand) throws Exception {
+	public List<CarDetail> getCarDetail(Float max, String carBrand) throws DbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<CarDetail> getCarDetailAbovePrice(float min, String carBrand) throws Exception {
+	public List<CarDetail> getCarDetailAbovePrice(float min, String carBrand) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		float max = 900000000;
 		String car_status = "available";
-		String sql = "select car_brand,car_name,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year from car_detail where price between ? and ? and car_brand IN(?) and status=? order by price asc";
+		String sql = "select car_brand,car_name,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year from car_detail where price between ? and ? and car_brand IN(?) and status=? order by price asc";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, min);
 			ps.setFloat(2, max);
@@ -294,31 +318,32 @@ public class CarDetailImp implements CarDetailDAO {
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail carDetail = new CarDetail();
-					carDetail.setCarBrand(rs.getString("car_brand"));
-					carDetail.setCarName(rs.getString("car_name"));
-					carDetail.setCarId(rs.getInt("car_id"));
-					carDetail.setDrivenKm(rs.getInt("Driven_km"));
-					carDetail.setPrice(rs.getInt("price"));
-					carDetail.setFuelType(rs.getString("fuel_type"));
-					carDetail.setCarAvailableCity(rs.getString("car_available_city"));
-					carDetail.setRegistrationNo(rs.getString("registration_no"));
-					carDetail.setTrType(rs.getString("tr_type"));
-					carDetail.setRegYear(rs.getInt("reg_year"));
+					carDetail.setCarBrand(rs.getString(car_brand));
+					carDetail.setCarName(rs.getString(car_name));
+					carDetail.setCarId(rs.getInt(car_id));
+					carDetail.setDrivenKm(rs.getInt(driven_km));
+					carDetail.setPrice(rs.getInt(price));
+					carDetail.setFuelType(rs.getString(fuel_type));
+					carDetail.setCarAvailableCity(rs.getString(car_available_city));
+					carDetail.setRegistrationNo(rs.getString(registration_no));
+					carDetail.setTrType(rs.getString(tr_type));
+					carDetail.setRegYear(rs.getInt(reg_year));
 					ar.add(carDetail);
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e);
+			throw new DbException("unable to retrive");
 
 		}
 		return ar;
 	}
 
 	@Override
-	public List<CarDetail> getCarDetailBelowPrice(Float max, String carBrand) throws Exception {
+	public List<CarDetail> getCarDetailBelowPrice(Float max, String carBrand) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String carStatus = "available";
-		String sql = "select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where price<=? and  car_brand IN(?) and status=? order by price asc";
+		String sql = "select car_brand,car_name,reg_year,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where price<=? and  car_brand IN(?) and status=? order by price asc";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, max);
 			ps.setString(2, carBrand);
@@ -326,31 +351,33 @@ public class CarDetailImp implements CarDetailDAO {
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail carDetail = new CarDetail();
-					carDetail.setCarBrand(rs.getString("car_brand"));
-					carDetail.setCarName(rs.getString("car_name"));
-					carDetail.setCarId(rs.getInt("car_id"));
-					carDetail.setDrivenKm(rs.getInt("Driven_km"));
-					carDetail.setPrice(rs.getInt("price"));
-					carDetail.setFuelType(rs.getString("fuel_type"));
-					carDetail.setCarAvailableCity(rs.getString("car_available_city"));
-					carDetail.setRegistrationNo(rs.getString("registration_no"));
-					carDetail.setTrType(rs.getString("tr_type"));
-					carDetail.setRegYear(rs.getInt("reg_year"));
+					carDetail.setCarBrand(rs.getString(car_brand));
+					carDetail.setCarName(rs.getString(car_name));
+					carDetail.setCarId(rs.getInt(car_id));
+					carDetail.setDrivenKm(rs.getInt(driven_km));
+					carDetail.setPrice(rs.getInt(price));
+					carDetail.setFuelType(rs.getString(fuel_type));
+					carDetail.setCarAvailableCity(rs.getString(car_available_city));
+					carDetail.setRegistrationNo(rs.getString(registration_no));
+					carDetail.setTrType(rs.getString(tr_type));
+					carDetail.setRegYear(rs.getInt(reg_year));
 					ar.add(carDetail);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+			log.error(e);
+
+			throw new DbException("unable to retrive");
 
 		}
 		return ar;
 	}
 
 	@Override
-	public List<CarDetail> getCarDetailAboveDrivenKm(float startFrom, float endTo) throws Exception {
+	public List<CarDetail> getCarDetailAboveDrivenKm(float startFrom, float endTo) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String carStatus = "available";
-		String sql = "select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where driven_km between ? and ?  and status=? order by driven_km asc";
+		String sql = "select car_brand,car_name,reg_year,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where driven_km between ? and ?  and status=? order by driven_km asc";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, startFrom);
 			ps.setFloat(2, endTo);
@@ -358,50 +385,54 @@ public class CarDetailImp implements CarDetailDAO {
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail carDetail = new CarDetail();
-					carDetail.setCarBrand(rs.getString("car_brand"));
-					carDetail.setCarName(rs.getString("car_name"));
-					carDetail.setCarId(rs.getInt("car_id"));
-					carDetail.setDrivenKm(rs.getInt("Driven_km"));
-					carDetail.setPrice(rs.getInt("price"));
-					carDetail.setFuelType(rs.getString("fuel_type"));
-					carDetail.setCarAvailableCity(rs.getString("car_available_city"));
-					carDetail.setRegistrationNo(rs.getString("registration_no"));
-					carDetail.setTrType(rs.getString("tr_type"));
-					carDetail.setRegYear(rs.getInt("reg_year"));
+					carDetail.setCarBrand(rs.getString(car_brand));
+					carDetail.setCarName(rs.getString(car_name));
+					carDetail.setCarId(rs.getInt(car_id));
+					carDetail.setDrivenKm(rs.getInt(driven_km));
+					carDetail.setPrice(rs.getInt(price));
+					carDetail.setFuelType(rs.getString(fuel_type));
+					carDetail.setCarAvailableCity(rs.getString(car_available_city));
+					carDetail.setRegistrationNo(rs.getString(registration_no));
+					carDetail.setTrType(rs.getString(tr_type));
+					carDetail.setRegYear(rs.getInt(reg_year));
 					ar.add(carDetail);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+	     log.error(e);
+
+			throw new DbException("unable to retrive");
 
 		}
 		return ar;
 	}
 
 	@Override
-	public List<CarDetail> getCarDetailUseFuelType(String fuelType) throws Exception {
+	public List<CarDetail> getCarDetailUseFuelType(String fuelType) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
-		String sql = "select car_brand,car_name,reg_year,car_id,Driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where fuel_type=?";
+		String sql = "select car_brand,car_name,reg_year,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where fuel_type=?";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setString(1, fuelType);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail carDetail = new CarDetail();
-					carDetail.setCarBrand(rs.getString("car_brand"));
-					carDetail.setCarName(rs.getString("car_name"));
-					carDetail.setCarId(rs.getInt("car_id"));
-					carDetail.setDrivenKm(rs.getInt("Driven_km"));
-					carDetail.setPrice(rs.getInt("price"));
-					carDetail.setFuelType(rs.getString("fuel_type"));
-					carDetail.setCarAvailableCity(rs.getString("car_available_city"));
-					carDetail.setRegistrationNo(rs.getString("registration_no"));
-					carDetail.setTrType(rs.getString("tr_type"));
-					carDetail.setRegYear(rs.getInt("reg_year"));
+					carDetail.setCarBrand(rs.getString(car_brand));
+					carDetail.setCarName(rs.getString(car_name));
+					carDetail.setCarId(rs.getInt(car_id));
+					carDetail.setDrivenKm(rs.getInt(driven_km));
+					carDetail.setPrice(rs.getInt(price));
+					carDetail.setFuelType(rs.getString(fuel_type));
+					carDetail.setCarAvailableCity(rs.getString(car_available_city));
+					carDetail.setRegistrationNo(rs.getString(registration_no));
+					carDetail.setTrType(rs.getString(tr_type));
+					carDetail.setRegYear(rs.getInt(reg_year));
 					ar.add(carDetail);
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (SQLException e) {
+		 log.error(e);
+
+			throw new DbException("unable to retrive");
 
 		}
 		return ar;

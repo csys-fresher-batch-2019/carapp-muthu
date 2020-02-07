@@ -4,18 +4,19 @@ import java.util.List;
 
 import com.chainsys.carsale.model.CarOrder;
 import com.chainsys.carsale.model.CarOwner;
+import com.chainsys.carsale.util.DbException;
 
 public interface CarOwnerDAO {
 
-	void AddCarOwner(CarOwner carOwner) throws Exception;
+	void AddCarOwner(CarOwner carOwner) throws DbException;
 
-	void deleteCarDetail(int carOwnerId, int carId) throws Exception;
+	void deleteCarDetail(int carOwnerId, int carId) throws DbException;
 
-	public List<CarOwner> ViewYourCar(long mobileNo) throws Exception;
+	public List<CarOwner> ViewYourCar(long mobileNo) throws DbException;
 
-	void updateCarPrice(CarOwner carOwner) throws Exception;
+	void updateCarPrice(CarOwner carOwner) throws DbException;
 
-	public boolean isCarOwnerAlreadyRegistered(Long mobileNo) throws Exception;
+	public boolean isCarOwnerAlreadyRegistered(Long mobileNo) throws DbException;
 
-	public List<CarOrder> ViewYourPlacedCar(Long mobileNo) throws Exception;
+	public List<CarOrder> ViewYourPlacedCar(Long mobileNo) throws DbException;
 }

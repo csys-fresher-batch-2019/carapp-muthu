@@ -10,10 +10,7 @@ public class Logger {
 	{
 		System.out.println(message);
 	}
-	public void debug(Object message)
-	{
-		System.out.println(message);
-	}
+	
 	public void error(Object message)
 	{
 		System.err.println(message);

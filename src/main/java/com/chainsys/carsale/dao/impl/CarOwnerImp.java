@@ -60,7 +60,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		return exists;
 	}
 
-	public void AddCarOwner(CarOwner carOwner) throws DbException {
+	public void addCarOwner(CarOwner carOwner) throws DbException {
 		// Connection con=null;
 		// PreparedStatement pst=null;
 		String sql = "insert into car_seller(seller_id,seller_name,seller_contact_no,user_password,address1,address2,city,seller_state,pincode)values(seller_id_sq.nextval,?,?,?,?,?,?,?,?)";
@@ -111,7 +111,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		}
 	}
 
-	public List<CarOwner> ViewYourCar(long mobileNo) throws DbException {
+	public List<CarOwner> viewYourCar(long mobileNo) throws DbException {
 		List<CarOwner> al = new ArrayList<CarOwner>();
 		// Connection con=null;
 		// PreparedStatement ps=null;
@@ -193,7 +193,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 
 	}
 
-	public List<CarOrder> ViewYourPlacedCar(Long mobileNo) throws DbException {
+	public List<CarOrder> viewYourPlacedCar(Long mobileNo) throws DbException {
 		// Connection con = null;
 		// PreparedStatement ps = null;
 		List<CarOrder> ar = new ArrayList<CarOrder>();

@@ -124,6 +124,12 @@ public class CarOrderImp implements CarOrderDAO {
 		return ts;
 	}
 
+	@Override
+	public void updateCarStatus(int carId) throws DbException {
+		// TODO Auto-generated method stub
+		
+	}
+
 	/*
 	 * public void updateCarStatus(int carId) throws DbException { // TODO
 	 * Auto-generated method stub CarDetail c=new CarDetail(); Connection

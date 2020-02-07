@@ -15,10 +15,9 @@ public class ConnectionUtil {
 					"oracle");
 			System.out.println(connection);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 			throw new RuntimeException("Driver class not found");
 		} catch (SQLException e) {
-			e.printStackTrace();
+			
 			throw new RuntimeException("invalid DB credentials");
 		}
 		return connection;

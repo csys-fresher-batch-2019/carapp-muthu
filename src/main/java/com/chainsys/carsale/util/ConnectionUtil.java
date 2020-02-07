@@ -11,9 +11,8 @@ public class ConnectionUtil {
 		try {
 			String server = "cslh2003";
 			String system="system";
-			String pass="oracle";
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			connection = DriverManager.getConnection("jdbc:oracle:thin:@" + server + ":1521:XE", system,pass);
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+			connection = DriverManager.getConnection("jdbc:oracle:thin:@" + server + ":1521:XE", system,"oracle");
 			System.out.println(connection);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Driver class not found");

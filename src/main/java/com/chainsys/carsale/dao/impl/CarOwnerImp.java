@@ -115,7 +115,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		List<CarOwner> al = new ArrayList<CarOwner>();
 		// Connection con=null;
 		// PreparedStatement ps=null;
-		String sql = "select * from car_seller s,car_detail c where s.seller_contact_no=? and s.seller_id=c.car_seller_id";
+		String sql = "select * from car_seller s,car_detail c where (s.seller_contact_no=? or s.seller_Id=?) and s.seller_id=c.car_seller_id";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);)
 
 		{
@@ -124,6 +124,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 			 * seller_contact_no="+mobileno+""; Statement st=con.createStatement();
 			 */
 			ps.setLong(1,mobileNo);
+			ps.setLong(2,mobileNo);
 
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {

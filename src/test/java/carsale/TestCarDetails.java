@@ -1,4 +1,5 @@
 package carsale;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
@@ -8,8 +9,9 @@ import com.chainsys.carsale.dao.impl.CarOwnerImp;
 import com.chainsys.carsale.logger.Logger;
 import com.chainsys.carsale.model.CarDetail;
 import com.chainsys.carsale.model.CarOwner;
+
 public class TestCarDetails {
-	private static final Logger log=Logger.getInstance();
+	private static final Logger log = Logger.getInstance();
 
 	public static void main(String[] args) throws Exception
 	{
@@ -91,12 +93,14 @@ public class TestCarDetails {
 	        {
 	        case 1:
 	        {
+	        	
 	     	           	log.getInput("Enter the  seller ID");
 	     	int sellerId=sc.nextInt();
 	        	log.getInput("Enter your password");
 			String pass=sc.next();
+			
 			CarDetailImp ci=new CarDetailImp();
-			int sellerIdd=ci.verifyUser(sellerId, pass);
+			int sellerIdd=ci.getSellerId((long) sellerId,pass);
 			if(sellerIdd!=0)
 			{
 			log.getInput("Enter car name");
@@ -148,14 +152,18 @@ public class TestCarDetails {
 		   cardetail.setVehicleIdNo(vehicleNo);
 		   cardetail.setCarOwner(cown);
 		   cardetail.setIsOwner(isOwner);
-			 ci.addCarDetail(cardetail);
+		  	  		
+			   ci.addCarDetail(cardetail);
 			}
 			else
 			{
 				log.error("invalid userId and password");
 			}
+			
+		   
 			break;
 	        }
+			
 	        case 2:
 	        {
 	        	CarOwner car=new CarOwner();
@@ -165,8 +173,12 @@ public class TestCarDetails {
 	        	log.getInput("Enter your password");
 			  String password=sc.next();
 	        	car.setPassword(password);
+	        	
 			CarDetailImp ci=new CarDetailImp();
+			
+			
 			int sellerId=ci.getSellerId(mobileNo,password);
+			//int sellerId=ci.getSellerId2();
 			if(sellerId!=0)
 			{
 			log.getInput("Enter car name");
@@ -195,7 +207,7 @@ public class TestCarDetails {
             String vehicleNo=sc.next();
             log.getInput( "are you  owner(press 1) or intermediatary(press 0)");
             int isOwner=sc.nextInt();
-			LocalDate updatedDate=LocalDate.now();
+			
 			
 		    CarDetail cardetail = new CarDetail();
 			//cardetail.setCarOwnerId(carOwnerId);
@@ -208,7 +220,7 @@ public class TestCarDetails {
 			cardetail.setTrType(trType);
 			cardetail.setRegYear(regYear);
 			cardetail.setDrivenKm(drivenKm);
-			cardetail.setUpdateDate(updatedDate);
+			
 			cardetail.setRegState(regState);
 			cardetail.setCarAvailableCity(carAvailabeCity);
 		    cardetail.setRegistrationNo(registrationNo);
@@ -375,5 +387,3 @@ public class TestCarDetails {
 	
 			
 }
-		
-		

@@ -32,7 +32,7 @@ public class TestCarOwner {
 			int ch = sc.nextInt();
 			switch (ch) {
 			case 1: {
-				log.getInput("Enter Your Phone Number");
+				log.getInput("Enter Your Phone Number or sellerID");
 				long mobileno = sc.nextLong();
 				List<CarOwner> al = obj.viewYourCar(mobileno);
 				for (CarOwner co : al) {

@@ -18,9 +18,9 @@ public interface CarDetailDAO {
 
 	public List<CarDetail> getCarDetail(String carName, String carBrand, String fuleType) throws DbException;
 
-	public int verifyUser(int sellerIdd, String password) throws DbException;
+	//public int verifyUser(int sellerIdd, String password) throws DbException;
 
-	public int getSellerId(Long mobileNo, String password) throws DbException;
+	//public int getSellerId(Long mobileNo, String password) throws DbException;
 
 	public List<CarDetail> getCarDetailAbovePrice(float max, String carBrand) throws DbException;
 

@@ -31,7 +31,8 @@ public class TestCarDetails {
 		log.getInput("7.serach by car price(below) and Car Brand");
 		log.getInput("8.search by car Driven Kilometer");
 		log.getInput("9. search By Fuel Type");
-		log.getInput("10.Exit");
+		log.getInput("10.search by car id;");
+		log.getInput("11.view All cars");
 		int cho=sc.nextInt();
 		switch(cho)
 		{
@@ -279,7 +280,7 @@ public class TestCarDetails {
 			List<CarDetail>al=co.getCarDetail(cd.getCarBrand());
 			for(CarDetail cdl:al)
 			{
-			log.info(cdl.getCarName()+"   "+cdl.getCarBrand()+"   "+cdl.getTrType()+"    "+cdl.getFuelType()+"   "+cdl.getRegState()+"   "+cdl.getRegYear()+"   "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"    "+cdl.getStatus()+"   "+cdl.getRegistrationNo()+"    a"+cdl.getCarOwner().getownerName());
+			log.info(cdl.getCarId()+" "+cdl.getCarName()+"   "+cdl.getCarBrand()+"   "+cdl.getTrType()+"    "+cdl.getFuelType()+"   "+cdl.getRegState()+"   "+cdl.getRegYear()+"   "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"    "+cdl.getStatus()+"   "+cdl.getRegistrationNo()+"    "+cdl.getCarOwner().getownerName()+"   "+cdl.getImageSrc());
 			}	
 		break;
 		}
@@ -313,12 +314,12 @@ public class TestCarDetails {
 		{
 			log.getInput("Enter the minium car price");
 			float minPrice=sc.nextFloat();
-			log.getInput("Enter the car Brand");
-			String carBrand=sc.next();
-			List<CarDetail> ar=co.getCarDetailAbovePrice(minPrice,carBrand);
+			//log.getInput("Enter the car Brand");
+			//String carBrand=sc.next();
+			List<CarDetail> ar=co.getCarDetailAbovePrice(minPrice);
 			for(CarDetail cdr:ar)
 			{
-				log.info(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"  "+cdr.getStatus()+"   "+cdr.getRegistrationNo());
+				log.info(cdr.getCarOwnerId()+""+cdr.getImageSrc()+""+cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"  "+cdr.getStatus()+"   "+cdr.getRegistrationNo());
 				
 				}
 			if(ar.isEmpty())
@@ -332,12 +333,12 @@ public class TestCarDetails {
 		{
 			log.getInput("Enter the maximum car price");
 			float maxPrice=sc.nextFloat();
-			log.getInput("Enter the car Brand");
-			String carBrand=sc.next();
-			List<CarDetail> ar=co.getCarDetailBelowPrice(maxPrice,carBrand);
+			//log.getInput("Enter the car Brand");
+			//String carBrand=sc.next();
+			List<CarDetail> ar=co.getCarDetailBelowPrice(maxPrice);
 			for(CarDetail cdr:ar)
 			{
-				log.info(cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
+				log.info(cdr.getCarOwnerId()+""+cdr.getImageSrc()+" "+cdr.getCarName()+"    "+cdr.getCarBrand()+"    "+cdr.getTrType()+"  "+cdr.getFuelType()+" "+cdr.getCarId()+"  "+cdr.getCarAvailableCity()+"   "+cdr.getRegYear()+"  "+cdr.getDrivenKm()+"   "+cdr.getPrice()+"    "+cdr.getRegistrationNo());
 				
 				}
 			break;
@@ -374,6 +375,27 @@ public class TestCarDetails {
 			}
 			break;
 		}
+		case 10:
+		{
+			log.getInput(" enter  car id");
+			int carId=sc.nextInt();
+			cd.setCarId(carId);
+			List<CarDetail>al=co.getCarDetailUseCarId(cd.getCarId());
+			for(CarDetail cdl:al)
+			{
+			log.info(cdl.getCarOwnerId()+"   "+cdl.getCarId()+" "+cdl.getCarName()+"   "+cdl.getCarBrand()+"   "+cdl.getTrType()+"    "+cdl.getFuelType()+"   "+cdl.getRegState()+"   "+cdl.getRegYear()+"   "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"    "+cdl.getStatus()+"   "+cdl.getRegistrationNo()+"    "+cdl.getCarOwner().getownerName()+"   "+cdl.getImageSrc()+"   "+cdl.getCarOwner().getContactNo());
+			}
+			break;
+		}
+		case 11:
+		{
+		List<CarDetail> list=co.viewAllCar();
+		for(CarDetail cdl:list)
+		{
+		log.info(cdl.getCarOwnerId()+"   "+cdl.getCarId()+" "+cdl.getCarName()+"   "+cdl.getCarBrand()+"   "+cdl.getTrType()+"    "+cdl.getFuelType()+"   "+cdl.getRegState()+"   "+cdl.getRegYear()+"   "+cdl.getDrivenKm()+"   "+cdl.getPrice()+"    "+cdl.getStatus()+"   "+cdl.getRegistrationNo());
+		}
+		}
+		break;
 		
 		default:
 			log.error("Enter valid option");

@@ -34,7 +34,7 @@ public class CarDetailImp implements CarDetailDAO {
 	private static final String driven_km = "driven_km";
 	private static final String car_available_city = "car_available_city";
 	private static final String vehicle_identification_no = "vehicle_identification_no";
-
+    private static final String image="images";
 	public int getSellerId(Long mobileNo, String password) throws DbException {
 
 		int sellerId = 0;
@@ -157,13 +157,16 @@ public class CarDetailImp implements CarDetailDAO {
 	public List<CarDetail> getCarDetail(String carName) throws DbException {
 
 		List<CarDetail> ar = new ArrayList<CarDetail>();
-		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=?";
+		String stat="available";
+		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=? and t.status=?";
 
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
 			ps.setString(1, carName);
+			ps.setString(2, stat);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail c = new CarDetail();
+					c.setCarId(rs.getInt(car_id));
 					c.setCarName(rs.getString(car_name));
 					c.setCarBrand(rs.getString(car_brand));
 					c.setTrType(rs.getString(tr_type));
@@ -174,6 +177,7 @@ public class CarDetailImp implements CarDetailDAO {
 					c.setPrice(rs.getInt(price));
 					c.setStatus(rs.getString(statuss));
 					c.setRegistrationNo(rs.getString(registration_no));
+					c.setImageSrc(rs.getString(image));
 					CarOwner carowner = new CarOwner();
 					carowner.setownerName(rs.getString(seller_name));
 					c.setCarOwner(carowner);
@@ -324,19 +328,22 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	@Override
-	public List<CarDetail> getCarDetailAbovePrice(float min, String carBrand) throws DbException {
+	public List<CarDetail> getCarDetailAbovePrice(float min) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		float max = 900000000;
 		String car_status = "available";
-		String sql = "select car_brand,car_name,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year from car_detail where price between ? and ? and car_brand IN(?) and status=? order by price asc";
+		String sql="select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id  where price between ? and ?  and status=?";
+
+		//String sql = "select car_brand,images,car_name,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year from car_detail where price between ? and ?  and status=? order by price asc";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, min);
 			ps.setFloat(2, max);
-			ps.setString(3, carBrand);
-			ps.setString(4, car_status);
+			ps.setString(3, car_status);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
+			
 					CarDetail carDetail = new CarDetail();
+					carDetail.setCarOwnerId(rs.getInt(seller_id));
 					carDetail.setCarBrand(rs.getString(car_brand));
 					carDetail.setCarName(rs.getString(car_name));
 					carDetail.setCarId(rs.getInt(car_id));
@@ -347,6 +354,7 @@ public class CarDetailImp implements CarDetailDAO {
 					carDetail.setRegistrationNo(rs.getString(registration_no));
 					carDetail.setTrType(rs.getString(tr_type));
 					carDetail.setRegYear(rs.getInt(reg_year));
+					carDetail.setImageSrc(rs.getString(image));
 					ar.add(carDetail);
 				}
 			}
@@ -359,17 +367,19 @@ public class CarDetailImp implements CarDetailDAO {
 	}
 
 	@Override
-	public List<CarDetail> getCarDetailBelowPrice(Float max, String carBrand) throws DbException {
+	public List<CarDetail> getCarDetailBelowPrice(Float max) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String carStatus = "available";
-		String sql = "select car_brand,car_name,reg_year,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where price<=? and  car_brand IN(?) and status=? order by price asc";
+		String sql="select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id  where price <=? and status=?";
+
+		//String sql = "select car_brand,images,car_name,reg_year,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where price<=? and status=? order by price asc";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, max);
-			ps.setString(2, carBrand);
-			ps.setString(3, carStatus);
+			ps.setString(2, carStatus);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail carDetail = new CarDetail();
+					carDetail.setCarOwnerId(rs.getInt(seller_id));
 					carDetail.setCarBrand(rs.getString(car_brand));
 					carDetail.setCarName(rs.getString(car_name));
 					carDetail.setCarId(rs.getInt(car_id));
@@ -380,6 +390,7 @@ public class CarDetailImp implements CarDetailDAO {
 					carDetail.setRegistrationNo(rs.getString(registration_no));
 					carDetail.setTrType(rs.getString(tr_type));
 					carDetail.setRegYear(rs.getInt(reg_year));
+					carDetail.setImageSrc(rs.getString(image));
 					ar.add(carDetail);
 				}
 			}
@@ -457,4 +468,75 @@ public class CarDetailImp implements CarDetailDAO {
 		return ar;
 	}
 
+	@Override
+	public List<CarDetail> getCarDetailUseCarId(int carId) throws DbException {
+		List<CarDetail> ar = new ArrayList<CarDetail>();
+				String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_id=? and t.status='available'";
+
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+			ps.setInt(1, carId);
+			try (ResultSet rs = ps.executeQuery();) {
+				while (rs.next()) {
+					CarDetail c = new CarDetail();
+					c.setCarId(rs.getInt(car_id));
+					c.setCarOwnerId(rs.getInt(seller_id));
+					c.setCarName(rs.getString(car_name));
+					c.setCarBrand(rs.getString(car_brand));
+					c.setTrType(rs.getString(tr_type));
+					c.setFuelType(rs.getString(fuel_type));
+					c.setRegState(rs.getString(reg_state));
+					c.setRegYear(rs.getInt(reg_year));
+					c.setDrivenKm(rs.getInt(driven_km));
+					c.setPrice(rs.getInt(price));
+					c.setStatus(rs.getString(statuss));
+					c.setRegistrationNo(rs.getString(registration_no));
+					c.setImageSrc(rs.getString(image));
+					CarOwner carowner = new CarOwner();
+					carowner.setownerName(rs.getString(seller_name));
+					c.setCarOwner(carowner);
+					ar.add(c);
+				}
+			}
+		} catch (SQLException e) {
+			log.error(e);
+			throw new DbException("unable to retrive the car information!!");
+		}
+
+		return ar;
+	}
+
+	@Override
+	public List<CarDetail> viewAllCar() throws DbException {
+		List<CarDetail> ar = new ArrayList<CarDetail>();
+		String sql = "select * from  car_detail";
+
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
+			try (ResultSet rs = ps.executeQuery();) {
+				while (rs.next()) {
+					CarDetail c = new CarDetail();
+					c.setCarId(rs.getInt(car_id));
+					c.setCarOwnerId(rs.getInt("car_seller_id"));
+					c.setCarName(rs.getString(car_name));
+					c.setCarBrand(rs.getString(car_brand));
+					c.setTrType(rs.getString(tr_type));
+					c.setFuelType(rs.getString(fuel_type));
+					c.setRegState(rs.getString(reg_state));
+					c.setRegYear(rs.getInt(reg_year));
+					c.setDrivenKm(rs.getInt(driven_km));
+					c.setPrice(rs.getInt(price));
+					c.setStatus(rs.getString(statuss));
+					c.setRegistrationNo(rs.getString(registration_no));
+					c.setImageSrc(rs.getString(image));
+					CarOwner carowner = new CarOwner();
+					c.setCarOwner(carowner);
+					ar.add(c);
+				}
+			}
+		
+	} catch (SQLException e) {
+		log.error(e);
+		throw new DbException("unable to retrive the car information!!");
+	}
+		return ar;
+	}
 }

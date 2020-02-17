@@ -17,7 +17,14 @@ import java.time.LocalDate;
 	private int price;
 	private String status;
 	private String carAvailableCity;
-    public int getIsOwner() {
+	private String  imageSrc;
+    public String getImageSrc() {
+		return imageSrc;
+	}
+	public void setImageSrc(String imageSrc) {
+		this.imageSrc = imageSrc;
+	}
+	public int getIsOwner() {
 		return isOwner;
 	}
 	public void setIsOwner(int isOwner) {

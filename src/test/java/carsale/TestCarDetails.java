@@ -33,6 +33,7 @@ public class TestCarDetails {
 		log.getInput("9. search By Fuel Type");
 		log.getInput("10.search by car id;");
 		log.getInput("11.view All cars");
+		log.getInput("12.RegNo");
 		int cho=sc.nextInt();
 		switch(cho)
 		{
@@ -396,7 +397,14 @@ public class TestCarDetails {
 		}
 		}
 		break;
-		
+		case 12:
+		{
+		  String regNo="TN69BA897";
+			CarDetailImp cdi=new CarDetailImp();
+			boolean ex=cdi.isCarAlreadyRegistered(regNo);
+		System.out.println(ex);
+		}
+		break;
 		default:
 			log.error("Enter valid option");
 			break;
@@ -406,6 +414,7 @@ public class TestCarDetails {
         }while(m=='y'||m=='Y');
 		sc.close();
 	}
+	
 	
 			
 }

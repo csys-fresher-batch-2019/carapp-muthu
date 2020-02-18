@@ -22,6 +22,7 @@ public class CarOrderImp implements CarOrderDAO {
 	private static final String delivered_date = "delivered_date";
 	private static final String car_name = "car_name";
 	private static final String car_id = "car_id";
+	private static final String  user_id="user_id";
 		public void orderCar(CarOrder carOrder) throws DbException  {
 		String check = " select car_id  from car_detail where car_id = ?";
 
@@ -33,7 +34,7 @@ public class CarOrderImp implements CarOrderDAO {
 				if (rs.next()) {
 
 					int carId = rs.getInt(car_id);
-					String sql = "insert into car_order(order_id,buyer_name,buyer_contact_number,car_id,seller_id,test_drive,address1,address2,city,buyer_state,pincode)values(order_id_sq.nextval,?,?,?,?,?,?,?,?,?,?)";
+					String sql = "insert into car_order(order_id,buyer_name,buyer_contact_number,car_id,seller_id,test_drive,address1,address2,city,buyer_state,pincode,user_id)values(order_id_sq.nextval,?,?,?,?,?,?,?,?,?,?,?)";
 					System.out.println(sql);
 					try (Statement stt = con.createStatement(); PreparedStatement pst = con.prepareStatement(sql);) {
 						pst.setString(1, carOrder.getBuyerName());
@@ -46,6 +47,7 @@ public class CarOrderImp implements CarOrderDAO {
 						pst.setString(8, carOrder.getCity());
 						pst.setString(9, carOrder.getBuyerState());
 						pst.setInt(10, carOrder.getPincode());
+						pst.setInt(11, carOrder.getUserId());
 						int rows = pst.executeUpdate();
 						System.out.println(rows);
 						System.out.println(sql);
@@ -128,6 +130,33 @@ public class CarOrderImp implements CarOrderDAO {
 	public void updateCarStatus(int carId) throws DbException {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<CarOrder> getOrderedCar(int userId) throws DbException {
+		String sql="select * from car_order where user_id=?";
+		List<CarOrder> ts = new ArrayList<CarOrder>();
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1,userId);
+			try (ResultSet rs = pst.executeQuery();) {
+				while (rs.next()) {
+					CarOrder cc = new CarOrder();
+				//	cc.setCarName(rs.getString(car_name));
+					cc.setDeliveredDate(rs.getDate(delivered_date));
+					cc.setBuyerName(rs.getString(buyer_name));
+					cc.setOrderId(rs.getInt(order_id));
+					cc.setCarId(rs.getInt(car_id));
+					cc.setSellerId(rs.getInt(seller_id));
+				
+					ts.add(cc);
+				}
+				System.out.println(sql);
+			}
+		} catch (SQLException e) {
+			log.error(e);
+			}
+		
+		return ts;
 	}
 
 	/*

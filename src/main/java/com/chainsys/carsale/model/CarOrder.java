@@ -10,7 +10,7 @@ public class CarOrder {
 	private int sellerId;
 	private String testDrive;
 	private String status;
-
+private int userId;
 	public String getCity() {
 		return city;
 	}
@@ -145,8 +145,16 @@ public class CarOrder {
 	public String toString() {
 		return "CarOrder [orderId=" + orderId + ", BuyerName=" + BuyerName + ", BuyerContactNo=" + BuyerContactNo
 				+ ", carId=" + carId + ", sellerId=" + sellerId + ", testDrive=" + testDrive + ", status=" + status
-				+ ", orderedDate=" + orderedDate + ", deliveredDate=" + deliveredDate + ", address1=" + address1
-				+ ", address2=" + address2 + ", pincode=" + pincode + ", BuyerState=" + BuyerState + ", city=" + city
-				+ ", carName=" + carName + "]";
+				+ ", userId=" + userId + ", orderedDate=" + orderedDate + ", deliveredDate=" + deliveredDate
+				+ ", address1=" + address1 + ", address2=" + address2 + ", pincode=" + pincode + ", BuyerState="
+				+ BuyerState + ", city=" + city + ", carName=" + carName + "]";
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 }

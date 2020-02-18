@@ -33,5 +33,6 @@ public interface CarDetailDAO {
 	public List<CarDetail> getCarDetailUseFuelType(String fuelType) throws DbException;
      public List<CarDetail> getCarDetailUseCarId(int carId) throws DbException;
     public List<CarDetail> viewAllCar() throws DbException;
+    
 }
 

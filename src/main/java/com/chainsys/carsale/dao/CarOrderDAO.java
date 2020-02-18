@@ -10,4 +10,5 @@ public interface CarOrderDAO {
 public List<CarOrder> getCarDeleveryDate(int orderId)throws DbException;
 public List<CarOrder>  getDeliveryCarDet(int orderId)throws DbException;
 public void updateCarStatus(int carId)throws DbException;
+public List<CarOrder> getOrderedCar(int userId)throws DbException;
 }

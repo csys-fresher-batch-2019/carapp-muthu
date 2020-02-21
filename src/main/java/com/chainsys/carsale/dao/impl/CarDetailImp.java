@@ -34,7 +34,8 @@ public class CarDetailImp implements CarDetailDAO {
 	private static final String driven_km = "driven_km";
 	private static final String car_available_city = "car_available_city";
 	private static final String vehicle_identification_no = "vehicle_identification_no";
-    private static final String image="images";
+	private static final String image = "images";
+
 	public int getSellerId(Long mobileNo, String password) throws DbException {
 
 		int sellerId = 0;
@@ -61,27 +62,22 @@ public class CarDetailImp implements CarDetailDAO {
 
 	}
 
-	/*public int verifyUser(int sellerIdd, String password) throws DbException {
-		int sellerId = 0;
-		String sql = "select seller_id from car_seller where seller_id=?  and user_password=?";
-		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
-			pst.setInt(1, sellerIdd);
-			pst.setString(2, password);
-
-			try (ResultSet rs = pst.executeQuery();) {
-				if (rs.next()) {
-					sellerId = rs.getInt(seller_id);
-					log.info("Login success");
-				}
-			}
-		} catch (SQLException e) {
-			log.error(e);
-			throw new DbException("invalid User");
-		}
-
-		return sellerId;
-
-	}*/
+	/*
+	 * public int verifyUser(int sellerIdd, String password) throws DbException {
+	 * int sellerId = 0; String sql =
+	 * "select seller_id from car_seller where seller_id=?  and user_password=?";
+	 * try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst =
+	 * con.prepareStatement(sql);) { pst.setInt(1, sellerIdd); pst.setString(2,
+	 * password);
+	 * 
+	 * try (ResultSet rs = pst.executeQuery();) { if (rs.next()) { sellerId =
+	 * rs.getInt(seller_id); log.info("Login success"); } } } catch (SQLException e)
+	 * { log.error(e); throw new DbException("invalid User"); }
+	 * 
+	 * return sellerId;
+	 * 
+	 * }
+	 */
 
 	public int getSellerId2(CarDetail cardetail) throws SQLException {
 
@@ -120,32 +116,30 @@ public class CarDetailImp implements CarDetailDAO {
 	public void addCarDetail(CarDetail cardetail) throws DbException {
 
 		try {
-			LocalDate updatedDate=LocalDate.now();
-				Date updatedDate1 = Date.valueOf(updatedDate);
-				String sql = "insert into car_detail(car_seller_id,car_id,car_brand,car_name,tr_type,fuel_type,reg_state,reg_year,driven_km,price,update_date,registration_no,vehicle_identification_no,car_available_city,is_owner,images)values(?,car_id_sq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-				System.out.println(sql);
-				try (Connection con = ConnectionUtil.getConnection();
-						PreparedStatement pstt = con.prepareStatement(sql);) {
-					pstt.setInt(1, cardetail.getCarOwnerId());
-					pstt.setString(2, cardetail.getCarBrand());
-					pstt.setString(3, cardetail.getCarName());
-					pstt.setString(4, cardetail.getTrType());
-					pstt.setString(5, cardetail.getFuelType());
-					pstt.setString(6, cardetail.getRegState());
-					pstt.setInt(7, cardetail.getRegYear());
-					pstt.setFloat(8, cardetail.getDrivenKm());
-					pstt.setFloat(9, cardetail.getPrice());
-					pstt.setDate(10, updatedDate1);
-					pstt.setString(11, cardetail.getRegistrationNo());
-					pstt.setString(12, cardetail.getVehicleIdNo());
-					pstt.setString(13, cardetail.getCarAvailableCity());
-					pstt.setInt(14, cardetail.getIsOwner());
-					pstt.setString(15, cardetail.getImageSrc());
-					int rows = pstt.executeUpdate();
-					System.out.println(rows);
-				}
+			LocalDate updatedDate = LocalDate.now();
+			Date updatedDate1 = Date.valueOf(updatedDate);
+			String sql = "insert into car_detail(car_seller_id,car_id,car_brand,car_name,tr_type,fuel_type,reg_state,reg_year,driven_km,price,update_date,registration_no,vehicle_identification_no,car_available_city,is_owner,images)values(?,car_id_sq.nextval,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			System.out.println(sql);
+			try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pstt = con.prepareStatement(sql);) {
+				pstt.setInt(1, cardetail.getCarOwnerId());
+				pstt.setString(2, cardetail.getCarBrand());
+				pstt.setString(3, cardetail.getCarName());
+				pstt.setString(4, cardetail.getTrType());
+				pstt.setString(5, cardetail.getFuelType());
+				pstt.setString(6, cardetail.getRegState());
+				pstt.setInt(7, cardetail.getRegYear());
+				pstt.setFloat(8, cardetail.getDrivenKm());
+				pstt.setFloat(9, cardetail.getPrice());
+				pstt.setDate(10, updatedDate1);
+				pstt.setString(11, cardetail.getRegistrationNo());
+				pstt.setString(12, cardetail.getVehicleIdNo());
+				pstt.setString(13, cardetail.getCarAvailableCity());
+				pstt.setInt(14, cardetail.getIsOwner());
+				pstt.setString(15, cardetail.getImageSrc());
+				int rows = pstt.executeUpdate();
+				System.out.println(rows);
+			}
 
-			
 		} catch (SQLException e) {
 			log.error(e);
 			throw new DbException("unable to add car");
@@ -158,7 +152,7 @@ public class CarDetailImp implements CarDetailDAO {
 	public List<CarDetail> getCarDetail(String carName) throws DbException {
 
 		List<CarDetail> ar = new ArrayList<CarDetail>();
-		String stat="available";
+		String stat = "available";
 		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_brand=? and t.status=?";
 
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
@@ -260,7 +254,7 @@ public class CarDetailImp implements CarDetailDAO {
 
 					CarOwner carowner = new CarOwner();
 					carowner.setownerName(rss.getString(seller_name));
-					carowner.setownerId(rss.getInt(seller_id));// instread of carowner.ownerid =
+					carowner.setOwnerId(rss.getInt(seller_id));// instread of carowner.ownerid =
 
 					carowner.setContactNo(rss.getLong(seller_contact_no));
 
@@ -305,7 +299,7 @@ public class CarDetailImp implements CarDetailDAO {
 					c.setRegistrationNo(rs.getString(registration_no));
 					co.setownerName(rs.getString(seller_name));
 					co.setContactNo(rs.getLong(seller_contact_no));
-					co.setownerId(rs.getInt(seller_id));
+					co.setOwnerId(rs.getInt(seller_id));
 					c.setCarOwner(co);
 					ar.add(c);
 				}
@@ -333,16 +327,18 @@ public class CarDetailImp implements CarDetailDAO {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		float max = 900000000;
 		String car_status = "available";
-		String sql="select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id  where price between ? and ?  and status=?";
+		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id  where price between ? and ?  and status=?";
 
-		//String sql = "select car_brand,images,car_name,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year from car_detail where price between ? and ?  and status=? order by price asc";
+		// String sql = "select
+		// car_brand,images,car_name,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type,reg_year
+		// from car_detail where price between ? and ? and status=? order by price asc";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, min);
 			ps.setFloat(2, max);
 			ps.setString(3, car_status);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
-			
+
 					CarDetail carDetail = new CarDetail();
 					carDetail.setCarOwnerId(rs.getInt(seller_id));
 					carDetail.setCarBrand(rs.getString(car_brand));
@@ -371,9 +367,11 @@ public class CarDetailImp implements CarDetailDAO {
 	public List<CarDetail> getCarDetailBelowPrice(Float max) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
 		String carStatus = "available";
-		String sql="select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id  where price <=? and status=?";
+		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id  where price <=? and status=?";
 
-		//String sql = "select car_brand,images,car_name,reg_year,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type from car_detail where price<=? and status=? order by price asc";
+		// String sql = "select
+		// car_brand,images,car_name,reg_year,car_id,driven_km,price,fuel_type,car_available_city,registration_no,tr_type
+		// from car_detail where price<=? and status=? order by price asc";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 			ps.setFloat(1, max);
 			ps.setString(2, carStatus);
@@ -472,7 +470,7 @@ public class CarDetailImp implements CarDetailDAO {
 	@Override
 	public List<CarDetail> getCarDetailUseCarId(int carId) throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
-				String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_id=? and t.status='available'";
+		String sql = "select * from  car_detail t left outer join car_seller d on t.car_seller_id=d.seller_id where t.car_id=? and t.status='available'";
 
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
 			ps.setInt(1, carId);
@@ -510,11 +508,11 @@ public class CarDetailImp implements CarDetailDAO {
 	@Override
 	public List<CarDetail> viewAllCar() throws DbException {
 		List<CarDetail> ar = new ArrayList<CarDetail>();
-		String stat="available";
+		String stat = "available";
 		String sql = "select * from  car_detail where status=?";
 
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sql);) {
-			ps.setString(1,stat);
+			ps.setString(1, stat);
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarDetail c = new CarDetail();
@@ -536,31 +534,29 @@ public class CarDetailImp implements CarDetailDAO {
 					ar.add(c);
 				}
 			}
-		
-	} catch (SQLException e) {
-		log.error(e);
-		throw new DbException("unable to retrive the car information!!");
-	}
+
+		} catch (SQLException e) {
+			log.error(e);
+			throw new DbException("unable to retrive the car information!!");
+		}
 		return ar;
 	}
-	public boolean isCarAlreadyRegistered(String regNo)throws DbException
-	{
-		boolean exists=false;
-		String sqll="select * from car_detail where registration_no=?";
+
+	public boolean isCarAlreadyRegistered(String regNo) throws DbException {
+		boolean exists = false;
+		String sqll = "select * from car_detail where registration_no=?";
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sqll);) {
-			
-				ps.setString(1,regNo);
-				try (ResultSet rs = ps.executeQuery();) {
-					if (rs.next()) {
-						exists = true;
-					}
+
+			ps.setString(1, regNo);
+			try (ResultSet rs = ps.executeQuery();) {
+				if (rs.next()) {
+					exists = true;
 				}
-			}catch (SQLException e) {
-				log.error(e);
 			}
-			return exists;
-			
-		
+		} catch (SQLException e) {
+			log.error(e);
+		}
+		return exists;
+
 	}
 }
-	

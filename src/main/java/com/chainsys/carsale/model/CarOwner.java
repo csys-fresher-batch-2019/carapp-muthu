@@ -99,15 +99,7 @@ public class CarOwner {
 		this.password = password;
 	}
 
-	public void setownerId(int ownerId) {
-		this.ownerId = ownerId;
-	}
-
-	public int getownerId() {
-		return ownerId;
-	}
-
-	public void setownerName(String ownerName) {
+		public void setownerName(String ownerName) {
 		this.ownerName = ownerName;
 	}
 

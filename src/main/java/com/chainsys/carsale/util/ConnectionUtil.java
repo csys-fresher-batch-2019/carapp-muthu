@@ -9,10 +9,10 @@ public class ConnectionUtil {
 	public static Connection getConnection() {
 		Connection connection = null;
 		try {
-			String server = "localhost";
+			String server = "13.235.147.120";
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String url = "jdbc:oracle:thin:@" + server + ":1521:XE";
-			connection = DriverManager.getConnection(url, "system", "oracle");
+			connection = DriverManager.getConnection(url, "muthu", "muthu");
 			System.out.println(connection);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("Driver class not found");

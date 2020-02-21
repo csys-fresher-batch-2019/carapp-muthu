@@ -42,14 +42,11 @@ public class CarOwnerImp implements CarOwnerDAO {
 
 	public boolean isCarOwnerAlreadyRegistered(Long mobileNo) throws DbException {
 		boolean exists = false;
-		// Connection con=null;
 		String sqll = "select * from car_seller where seller_contact_no=? or seller_id=?";
-
-		// Statement st=null;
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sqll);) {
 
 			ps.setLong(1, mobileNo);
-			ps.setLong(2,mobileNo);
+			ps.setLong(2, mobileNo);
 			try (ResultSet rs = ps.executeQuery();) {
 				if (rs.next()) {
 					exists = true;
@@ -124,15 +121,16 @@ public class CarOwnerImp implements CarOwnerDAO {
 			 * String sql="select seller_id from car_seller where
 			 * seller_contact_no="+mobileno+""; Statement st=con.createStatement();
 			 */
-			ps.setLong(1,mobileNo);
-			ps.setLong(2,mobileNo);
+			ps.setLong(1, mobileNo);
+			ps.setLong(2, mobileNo);
 
 			try (ResultSet rs = ps.executeQuery();) {
 				while (rs.next()) {
 					CarOwner c = new CarOwner();
 					CarDetail cd = new CarDetail();
 					c.setownerName(rs.getString(seller_name));
-					c.setownerId(rs.getInt(seller_id));
+					c.setOwnerId(rs.getInt(seller_id));
+					cd.setCarId(rs.getInt(car_id));
 					cd.setCarAvailableCity(rs.getString(car_available_city));
 					cd.setCarBrand(rs.getString(car_brand));
 					cd.setCarName(rs.getString(car_name));
@@ -145,13 +143,12 @@ public class CarOwnerImp implements CarOwnerDAO {
 					al.add(c);
 				}
 
-			} 
-		}catch (SQLException e) {
-				log.error(e);
-				throw new DbException("unable to view Car");
 			}
+		} catch (SQLException e) {
+			log.error(e);
+			throw new DbException("unable to view Car");
+		}
 
-		
 		return al;
 	}
 
@@ -161,7 +158,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 		CarDetail cardetail = carOwner.getCarDetail();
 		try (Connection con = ConnectionUtil.getConnection();) {
 
-			if (carOwner.getownerId() != 0) {
+			if (carOwner.getOwnerId() != 0) {
 				/*
 				 * sql = "update car_detail cd set cd.price="+cardetail.getPrice()+"where car_id
 				 * = "+cardetail.getCarId()+" and ( car_seller_id = "+carOwner.getownerId()+" or
@@ -172,7 +169,7 @@ public class CarOwnerImp implements CarOwnerDAO {
 				try (PreparedStatement ps = con.prepareStatement(sql);) {
 					ps.setFloat(1, cardetail.getPrice());
 					ps.setInt(2, cardetail.getCarId());
-					ps.setInt(3, carOwner.getownerId());
+					ps.setInt(3, carOwner.getOwnerId());
 					int rs = ps.executeUpdate();
 					System.out.println(rs + "Updated successFully");
 				}

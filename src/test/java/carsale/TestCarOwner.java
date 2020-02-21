@@ -37,7 +37,7 @@ public class TestCarOwner {
 				List<CarOwner> al = obj.viewYourCar(mobileno);
 				for (CarOwner co : al) {
 					log.info(co.getownerName() + "   " + co.getCarDetail().getCarBrand() + "    "
-							+ co.getCarDetail().getCarName() + "   " + co.getownerId() + "   "
+							+ co.getCarDetail().getCarName() + "   " + co.getOwnerId() + "   "
 							+ co.getCarDetail().getRegYear() + "   " + co.getCarDetail().getVehicleIdNo() + "   "
 							+ co.getCarDetail().getRegistrationNo() + "  " + co.getCarDetail().getDrivenKm() + " "
 							+ co.getCarDetail().getPrice() + "" + co.getCarDetail().getCarAvailableCity());
@@ -58,7 +58,7 @@ public class TestCarOwner {
 					switch (choice) {
 					case 1: {
 						log.getInput("Enter your id");
-						c.setownerId(sc.nextInt());
+						c.setOwnerId(sc.nextInt());
 						log.getInput("Enter Your car id");
 						CarDetail cd = new CarDetail();
 						cd.setCarId(sc.nextInt());

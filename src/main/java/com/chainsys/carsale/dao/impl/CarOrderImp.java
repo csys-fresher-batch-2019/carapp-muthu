@@ -23,7 +23,15 @@ public class CarOrderImp implements CarOrderDAO {
 	private static final String car_name = "car_name";
 	private static final String car_id = "car_id";
 	private static final String  user_id="user_id";
-		public void orderCar(CarOrder carOrder) throws DbException  {
+	private static final String  address1="address1";
+	private static final String  address2="address2";
+	private static final String  buyerState="buyer_state";
+	private static final String  pincode="pincode";
+	private static final String  city="city";
+	private static final String  orderDate="ordered_date";
+	private static final String  testDrive="test_drive";
+	private static final String  statuss="status";
+	public void orderCar(CarOrder carOrder) throws DbException  {
 		String check = " select car_id  from car_detail where car_id = ?";
 
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(check);) {
@@ -157,6 +165,41 @@ public class CarOrderImp implements CarOrderDAO {
 			}
 		
 		return ts;
+	}
+	public List<CarOrder> getOrderedUserCar(int sellerId)throws DbException
+	{
+		String sql="select * from car_order where seller_id=?";
+		List<CarOrder> ts = new ArrayList<CarOrder>();
+		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement pst = con.prepareStatement(sql);) {
+			pst.setInt(1,sellerId);
+			try (ResultSet rs = pst.executeQuery();) {
+				while (rs.next()) {
+					CarOrder cc = new CarOrder();
+				//	cc.setCarName(rs.getString(car_name));
+					cc.setDeliveredDate(rs.getDate(delivered_date));
+					cc.setBuyerName(rs.getString(buyer_name));
+					cc.setAddress1(rs.getString(address1));
+					cc.setAddress1(rs.getString(address1));
+					cc.setOrderId(rs.getInt(order_id));
+					cc.setBuyerState(rs.getString(buyerState));
+					cc.setCity(rs.getString(city));
+					cc.setStatus(rs.getString(statuss));
+					cc.setCarId(rs.getInt(car_id));
+					cc.setSellerId(rs.getInt(seller_id));
+				    cc.setUserId(rs.getInt(user_id));
+				    cc.setDeliveredDate(rs.getDate(delivered_date));
+				    cc.setOrderedDate(rs.getDate(orderDate));
+				    cc.setTestDrive(rs.getString(testDrive));
+				    cc.setPincode(rs.getInt(pincode));
+					ts.add(cc);
+				}
+				System.out.println(sql);
+			}
+		} catch (SQLException e) {
+			log.error(e);
+			}
+		return ts;
+		
 	}
 
 	/*

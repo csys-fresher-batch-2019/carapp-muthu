@@ -43,12 +43,13 @@ public class CarOwnerImp implements CarOwnerDAO {
 	public boolean isCarOwnerAlreadyRegistered(Long mobileNo) throws DbException {
 		boolean exists = false;
 		// Connection con=null;
-		String sqll = "select * from car_seller where seller_contact_no=?";
+		String sqll = "select * from car_seller where seller_contact_no=? or seller_id=?";
 
 		// Statement st=null;
 		try (Connection con = ConnectionUtil.getConnection(); PreparedStatement ps = con.prepareStatement(sqll);) {
 
 			ps.setLong(1, mobileNo);
+			ps.setLong(2,mobileNo);
 			try (ResultSet rs = ps.executeQuery();) {
 				if (rs.next()) {
 					exists = true;

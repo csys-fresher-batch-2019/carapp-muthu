@@ -9,7 +9,7 @@ public class ConnectionUtil {
 	public static Connection getConnection() {
 		Connection connection = null;
 		try {
-			String server = "cslh2003";
+			String server = "localhost";
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			String url = "jdbc:oracle:thin:@" + server + ":1521:XE";
 			connection = DriverManager.getConnection(url, "system", "oracle");

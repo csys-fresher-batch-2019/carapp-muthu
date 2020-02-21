@@ -25,7 +25,7 @@ public class TestCarOrder {
 			log.getInput("2.get your car delivery Date!!!!");
 			log.getInput("3.view Your car Delivery Information");
 			log.getInput("4.view your ordered car");
-
+             log.getInput("5.View ordered  your Car ");
 			int ch = sc.nextInt();
 			switch (ch) {
 			case 1: {
@@ -133,6 +133,18 @@ public class TestCarOrder {
 				}
 				break;
 				
+			}
+			case 5:
+			{
+				CarOrderImp co=new CarOrderImp();
+				log.getInput("Enter userId");
+				int userId=sc.nextInt();
+				List<CarOrder> li=co.getOrderedUserCar(userId);
+				for(CarOrder c:li)
+				{
+				 log.info(c.getBuyerName() + "," + c.getOrderId() + "," + c.getCarId() + ","+ c.getDeliveredDate());
+				}
+				break;
 			}
 			default:
 				log.error("enter the valid option");

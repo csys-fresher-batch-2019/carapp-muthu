@@ -109,6 +109,20 @@ public class TestCarOwner {
 				}
 				break;
 			}
+			case 5:
+			{
+				log.getInput("Enter mobile no/userId");
+				Long mobileNo = sc.nextLong();
+				boolean exist=obj.isCarOwnerAlreadyRegistered(mobileNo);
+				if(exist)
+				{
+					log.info(exist);
+				}
+				else
+				{
+					log.info("1");
+				}
+			}
 			}
 			log.getInput("Do you want to continue");
 			m = sc.next().charAt(0);
